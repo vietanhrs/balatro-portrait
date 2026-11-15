@@ -1,0 +1,9 @@
+# Portrait UI integration
+
+Entry: `scenes/main.tscn` → `ui/main.gd`. Runtime loads the actual core and save scripts when present; missing engine disables New Run instead of inventing gameplay. The UI uses 360×640 logical phone units with EXPAND aspect, matching the project baseline so 48-unit buttons are not halved on phones. Do not double-scale the UI.
+
+Complete screens: seed/new/replace confirmation, resume, blind selection and boss rules, 4×2 cards, ordered stable-ID selection, preview/play/discard/sort, shop buy/reroll/next, modifier inspect/sell/reorder, consumable use with hand/deck picker, score receipts, win/loss, help, menu/back/exit confirmation. Actions use frozen dictionary API. Saves occur after successful dispatch/new run and pause; no save for preview. No UI gameplay state edits. Safe area is applied to base UI and overlays; `back_requested` and `safe_area_changed` signals are available.
+
+Run: `godot --headless --path . --script res://tests/ui/smoke.gd`. Tested with Godot 4.7.2. Tests disable save writes before starting a run, use the real engine for select/discard/play/resume, verify stable selection/no preview mutation, 48-unit button heights, hand visibility and no horizontal overflow at 360×640 and 430×932, help/back, and deck-picker/terminal presentation fixtures. Fixtures are explicitly test-only; they do not claim shop or win-path engine coverage. Non-headless run captures screenshots into `tests/ui/`.
+
+Known boundaries: receipts are readable event lists, not animated scoring. No sound. Dense inventory/shop/help/deck picker scroll vertically; primary play/discard and picker Apply remain fixed. Android notch/back/keyboard and lifecycle behavior still require emulator/device verification by integration. Default font is engine bundled, not a downloaded asset. See `assets/PROVENANCE.md`.

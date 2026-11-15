@@ -1,0 +1,13 @@
+.godot/
+build/
+tooling/
+*.apk
+*.aab
+*.keystore
+*.jks
+export_credentials.cfg
+
+# Internal planning and generated desktop evidence.
+PLAN.md
+tests/ui/*.png
+tests/ui/*.png.import

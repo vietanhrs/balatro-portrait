@@ -1,0 +1,1418 @@
+{
+  "actions": [
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c3_12",
+        "c0_12"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "ids": [
+        "c2_6",
+        "c3_5",
+        "c1_8",
+        "c1_7",
+        "c3_9"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "slot": 0,
+      "type": "BUY"
+    },
+    {
+      "ids": [
+        "reserve"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c3_11",
+        "c2_11"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "ids": [
+        "c3_5",
+        "c0_5"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "slot": 0,
+      "type": "BUY"
+    },
+    {
+      "slot": 0,
+      "type": "BUY"
+    },
+    {
+      "ids": [
+        "reserve",
+        "even",
+        "echo"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c3_5",
+        "c0_2",
+        "c0_9",
+        "c2_8",
+        "c1_2"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "slot": 0,
+      "type": "BUY"
+    },
+    {
+      "slot": 0,
+      "type": "BUY"
+    },
+    {
+      "ids": [
+        "reserve",
+        "even",
+        "echo",
+        "court",
+        "red"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c2_9",
+        "c2_6",
+        "c3_9",
+        "c0_6"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "index": 2,
+      "type": "SELL"
+    },
+    {
+      "slot": 0,
+      "type": "BUY"
+    },
+    {
+      "ids": [
+        "reserve",
+        "even",
+        "court",
+        "red",
+        "last"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_13"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "index": 4,
+      "type": "SELL"
+    },
+    {
+      "slot": 0,
+      "type": "BUY"
+    },
+    {
+      "index": 1,
+      "type": "SELL"
+    },
+    {
+      "slot": 0,
+      "type": "BUY"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c2_9",
+        "c1_12",
+        "c2_11",
+        "c1_10",
+        "c3_8"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c0_13",
+        "c1_13"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "slot": 2,
+      "type": "BUY"
+    },
+    {
+      "index": 0,
+      "targets": [],
+      "type": "USE"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c0_8",
+        "c3_8",
+        "c1_8"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c2_13",
+        "c1_13"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "slot": 2,
+      "type": "BUY"
+    },
+    {
+      "index": 0,
+      "targets": [],
+      "type": "USE"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_14",
+        "c2_5",
+        "c3_5",
+        "c0_14"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c3_4",
+        "c0_6",
+        "c0_3",
+        "c3_7",
+        "c1_5"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c2_13",
+        "c1_6",
+        "c0_13",
+        "c0_6"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_2",
+        "c3_7",
+        "c2_7",
+        "c3_2"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c3_10",
+        "c3_5",
+        "c3_3",
+        "c3_13",
+        "c3_6"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "slot": 2,
+      "type": "BUY"
+    },
+    {
+      "index": 0,
+      "targets": [],
+      "type": "USE"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c2_11",
+        "c1_11"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "slot": 2,
+      "type": "BUY"
+    },
+    {
+      "index": 0,
+      "targets": [],
+      "type": "USE"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_5",
+        "c3_5"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "slot": 2,
+      "type": "BUY"
+    },
+    {
+      "index": 0,
+      "targets": [],
+      "type": "USE"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_11"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "ids": [
+        "c1_13"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "ids": [
+        "c0_11"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c2_2",
+        "c2_8",
+        "c2_3",
+        "c2_4",
+        "c2_7"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "ids": [
+        "c0_13",
+        "c1_13"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_2",
+        "c2_2"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_11",
+        "c3_11",
+        "c2_14",
+        "c1_14",
+        "c0_11"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_6",
+        "c2_6"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "ids": [
+        "c0_4",
+        "c3_4"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "slot": 2,
+      "type": "BUY"
+    },
+    {
+      "index": 0,
+      "targets": [],
+      "type": "USE"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c1_11",
+        "c3_9",
+        "c1_8",
+        "c1_10",
+        "c2_7"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c2_9",
+        "c1_9"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "ids": [
+        "c3_13"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "type": "REROLL"
+    },
+    {
+      "ids": [
+        "reserve",
+        "court",
+        "red",
+        "bank",
+        "black"
+      ],
+      "type": "REORDER"
+    },
+    {
+      "type": "NEXT"
+    },
+    {
+      "type": "SELECT_BLIND"
+    },
+    {
+      "ids": [
+        "c2_12",
+        "c1_12"
+      ],
+      "type": "PLAY"
+    },
+    {
+      "ids": [
+        "c3_5",
+        "c2_5"
+      ],
+      "type": "PLAY"
+    }
+  ],
+  "final_state": {
+    "ante": 8,
+    "boss": {
+      "description": "Triple the ante target.",
+      "id": "basalt_crown",
+      "name": "Basalt Crown"
+    },
+    "consumables": [],
+    "deck": [
+      {
+        "bonus_chips": 0,
+        "id": "c0_2",
+        "rank": 2,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_3",
+        "rank": 3,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_4",
+        "rank": 4,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_5",
+        "rank": 5,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_6",
+        "rank": 6,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_7",
+        "rank": 7,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_8",
+        "rank": 8,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_9",
+        "rank": 9,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_10",
+        "rank": 10,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_11",
+        "rank": 11,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_12",
+        "rank": 12,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_13",
+        "rank": 13,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c0_14",
+        "rank": 14,
+        "suit": 0
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_2",
+        "rank": 2,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_3",
+        "rank": 3,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_4",
+        "rank": 4,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_5",
+        "rank": 5,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_6",
+        "rank": 6,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_7",
+        "rank": 7,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_8",
+        "rank": 8,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_9",
+        "rank": 9,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_10",
+        "rank": 10,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_11",
+        "rank": 11,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_12",
+        "rank": 12,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_13",
+        "rank": 13,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c1_14",
+        "rank": 14,
+        "suit": 1
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_2",
+        "rank": 2,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_3",
+        "rank": 3,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_4",
+        "rank": 4,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_5",
+        "rank": 5,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_6",
+        "rank": 6,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_7",
+        "rank": 7,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_8",
+        "rank": 8,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_9",
+        "rank": 9,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_10",
+        "rank": 10,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_11",
+        "rank": 11,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_12",
+        "rank": 12,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_13",
+        "rank": 13,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c2_14",
+        "rank": 14,
+        "suit": 2
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_2",
+        "rank": 2,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_3",
+        "rank": 3,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_4",
+        "rank": 4,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_5",
+        "rank": 5,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_6",
+        "rank": 6,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_7",
+        "rank": 7,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_8",
+        "rank": 8,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_9",
+        "rank": 9,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_10",
+        "rank": 10,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_11",
+        "rank": 11,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_12",
+        "rank": 12,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_13",
+        "rank": 13,
+        "suit": 3
+      },
+      {
+        "bonus_chips": 0,
+        "id": "c3_14",
+        "rank": 14,
+        "suit": 3
+      }
+    ],
+    "discards_left": 3,
+    "draw_ids": [
+      "c0_14",
+      "c0_11",
+      "c1_2",
+      "c0_5",
+      "c1_14",
+      "c1_13",
+      "c3_6",
+      "c0_10",
+      "c2_11",
+      "c1_4",
+      "c2_8",
+      "c0_12",
+      "c1_10",
+      "c1_7",
+      "c2_2",
+      "c3_2",
+      "c0_8",
+      "c0_3",
+      "c2_4",
+      "c3_13",
+      "c1_5",
+      "c1_3",
+      "c3_14",
+      "c2_9",
+      "c2_6",
+      "c3_12",
+      "c0_6",
+      "c3_7",
+      "c3_11",
+      "c2_10",
+      "c1_8",
+      "c2_13",
+      "c0_4",
+      "c1_9",
+      "c3_4",
+      "c0_13",
+      "c3_3",
+      "c1_11",
+      "c2_3",
+      "c0_7"
+    ],
+    "hand_ids": [
+      "c0_2",
+      "c2_7",
+      "c1_6",
+      "c2_14",
+      "c3_9",
+      "c3_10",
+      "c3_8",
+      "c0_9"
+    ],
+    "hands_left": 2,
+    "history": [
+      {
+        "ante": 1,
+        "interest": 0,
+        "reward": 5,
+        "round": 0,
+        "score": 320
+      },
+      {
+        "ante": 1,
+        "interest": 1,
+        "reward": 7,
+        "round": 1,
+        "score": 244
+      },
+      {
+        "ante": 1,
+        "interest": 0,
+        "reward": 8,
+        "round": 2,
+        "score": 492
+      },
+      {
+        "ante": 2,
+        "interest": 0,
+        "reward": 6,
+        "round": 0,
+        "score": 944
+      },
+      {
+        "ante": 2,
+        "interest": 1,
+        "reward": 8,
+        "round": 1,
+        "score": 459
+      },
+      {
+        "ante": 2,
+        "interest": 1,
+        "reward": 9,
+        "round": 2,
+        "score": 3668
+      },
+      {
+        "ante": 3,
+        "interest": 2,
+        "reward": 8,
+        "round": 0,
+        "score": 1596
+      },
+      {
+        "ante": 3,
+        "interest": 2,
+        "reward": 9,
+        "round": 1,
+        "score": 1260
+      },
+      {
+        "ante": 3,
+        "interest": 3,
+        "reward": 11,
+        "round": 2,
+        "score": 1125
+      },
+      {
+        "ante": 4,
+        "interest": 2,
+        "reward": 8,
+        "round": 0,
+        "score": 1488
+      },
+      {
+        "ante": 4,
+        "interest": 3,
+        "reward": 10,
+        "round": 1,
+        "score": 2119
+      },
+      {
+        "ante": 4,
+        "interest": 3,
+        "reward": 11,
+        "round": 2,
+        "score": 2976
+      },
+      {
+        "ante": 5,
+        "interest": 3,
+        "reward": 9,
+        "round": 0,
+        "score": 1540
+      },
+      {
+        "ante": 5,
+        "interest": 2,
+        "reward": 9,
+        "round": 1,
+        "score": 2535
+      },
+      {
+        "ante": 5,
+        "interest": 2,
+        "reward": 10,
+        "round": 2,
+        "score": 2775
+      },
+      {
+        "ante": 6,
+        "interest": 3,
+        "reward": 9,
+        "round": 0,
+        "score": 2010
+      },
+      {
+        "ante": 6,
+        "interest": 3,
+        "reward": 8,
+        "round": 1,
+        "score": 2358
+      },
+      {
+        "ante": 6,
+        "interest": 2,
+        "reward": 9,
+        "round": 2,
+        "score": 6001
+      },
+      {
+        "ante": 7,
+        "interest": 2,
+        "reward": 8,
+        "round": 0,
+        "score": 2125
+      },
+      {
+        "ante": 7,
+        "interest": 3,
+        "reward": 10,
+        "round": 1,
+        "score": 5576
+      },
+      {
+        "ante": 7,
+        "interest": 2,
+        "reward": 9,
+        "round": 2,
+        "score": 3068
+      },
+      {
+        "ante": 8,
+        "interest": 3,
+        "reward": 9,
+        "round": 0,
+        "score": 3456
+      },
+      {
+        "ante": 8,
+        "interest": 2,
+        "reward": 8,
+        "round": 1,
+        "score": 3462
+      },
+      {
+        "ante": 8,
+        "interest": 3,
+        "reward": 13,
+        "round": 2,
+        "score": 7468
+      }
+    ],
+    "last_boss": "basalt_crown",
+    "levels": {
+      "five_of_a_kind": 1,
+      "flush": 1,
+      "flush_five": 1,
+      "flush_house": 1,
+      "four_of_a_kind": 1,
+      "full_house": 1,
+      "high_card": 1,
+      "pair": 7,
+      "straight": 1,
+      "straight_flush": 1,
+      "three_of_a_kind": 1,
+      "two_pair": 1
+    },
+    "modifiers": [
+      {
+        "cost": 4,
+        "description": "+12 chips per remaining discard.",
+        "id": "reserve",
+        "name": "Reserve Dial",
+        "stored": 0
+      },
+      {
+        "cost": 4,
+        "description": "Scoring face cards: +5 multiplier each.",
+        "id": "court",
+        "name": "Court Stamp",
+        "stored": 0
+      },
+      {
+        "cost": 4,
+        "description": "Scoring hearts and diamonds: +3 multiplier each.",
+        "id": "red",
+        "name": "Scarlet Thread",
+        "stored": 0
+      },
+      {
+        "cost": 6,
+        "description": "+2 multiplier per $5, capped at +12.",
+        "id": "bank",
+        "name": "Copper Vault",
+        "stored": 0
+      },
+      {
+        "cost": 4,
+        "description": "Scoring spades and clubs: +18 chips each.",
+        "id": "black",
+        "name": "Ink Thread",
+        "stored": 0
+      }
+    ],
+    "money": 29,
+    "phase": "won",
+    "played_categories": [
+      "pair",
+      "pair"
+    ],
+    "reroll_cost": 5,
+    "rng_state": 1934056971,
+    "round": 2,
+    "round_score": 7468,
+    "rounds_won": 24,
+    "seed": 1,
+    "shop": [],
+    "target": 6000,
+    "used_ids": [
+      "c2_12",
+      "c1_12",
+      "c3_5",
+      "c2_5"
+    ],
+    "version": 1
+  },
+  "seed": 1
+}

@@ -1,0 +1,9 @@
+# Mechanics and research
+
+Community documentation consulted 2026-11-15; it is not original game source or an official compatibility specification. Facts were paraphrased; no wiki text or artwork is bundled.
+
+Sources: [poker hands](https://balatrowiki.org/w/Poker_Hands), [card ranks](https://balatrowiki.org/w/Card_Ranks), [scoring stages](https://balatrowiki.org/w/Scoring), [blinds and antes](https://balatrowiki.org/w/Blinds_and_Antes), [shops](https://balatrowiki.org/w/Shop), [money](https://balatrowiki.org/w/Money), [tarot](https://balatrowiki.org/w/Tarot_cards), [planets](https://balatrowiki.org/w/Planet_cards), [saving](https://balatrowiki.org/w/Main_Menu). The wiki advertises CC BY-NC-SA 3.0; that does not confer rights to the underlying commercial game's artwork.
+
+Design: standard 52-card starting deck, eight-card hand, up to five selected cards, four hands and three discards per ordinary round. Twelve poker categories include altered-deck combinations; ace-low straights are allowed but wrapping straights are not. Card, held-card, and ordered independent modifier stages precede Chips × Mult.
+
+Deliberate differences: 20 original modifiers, eight original consumables, six original bosses, three fixed shop offer categories, no blind skipping or endless mode. Interest uses pre-reward cash, capped at five dollars. Every successful action is a save boundary. These are project design choices, not claims of exact Balatro parity. The fixed small-blind curve is deliberately reduced to [150,250,400,600,850,1150,1500,2000], big blinds ×1.5, ordinary bosses ×2 and the final boss ×3 (6000). This restricted-content edition is not balance-equivalent to Balatro. A strong visible-information bot won 9 of seeds 1–10 in the core author’s sample; that is not a human fairness claim.
