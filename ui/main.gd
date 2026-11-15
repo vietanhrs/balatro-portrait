@@ -30,6 +30,7 @@ var menu_resume := false
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	get_tree().auto_accept_quit = false
+	get_tree().quit_on_go_back = false
 	# UI units are phone dp, independent of export viewport defaults.
 	get_window().content_scale_size = Vector2i(360, 640)
 	get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND

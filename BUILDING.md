@@ -24,3 +24,5 @@ sha256sum build/velvet-circuit-debug.apk
 Preset package: `org.vietanhrs.velvetcircuit`; ARM64 and x86_64, debug signing, no Internet permission. Debug signing is for development, not a stable production identity. No Play Store publication is configured.
 
 Use a newly created isolated x86_64 emulator only, targeting its explicit `adb -s emulator-PORT` serial. Test launch, card selection, play/discard, shop, Android Back, background/resume, force-stop/relaunch, offline operation, and logcat crash absence. Do not install on physical devices without separate permission. Record actual commands and results; desktop tests do not prove Android behavior.
+
+Verified tool versions: Temurin 17.0.21+9, command-line tools 23.0, platform-tools 37.0.1, build-tools 35.0.1, platform35 r2, emulator37.2.13, AOSP default API35 x86_64 r2. Godot’s prebuilt 4.7.2 template targets API36 even with these installed build-tools; export falls back to 35.0.1 successfully. ETC2/ASTC import must remain enabled. Use emulator host graphics if SwiftShader hits uniform-vector limits. See docs/VERIFICATION.md for actual coverage.
