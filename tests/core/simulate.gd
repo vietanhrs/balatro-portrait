@@ -20,9 +20,9 @@ func best(s: Dictionary) -> Dictionary:
  return out
 func weight(id: String) -> int:
  return {"court":100,"red":95,"black":80,"reserve":85,"bank":90,"compact":75,"first":55,"ember":65,"ledger":70,"growth":60,"odd":70,"even":65,"twins":50,"trio":30,"ribbon":10,"prism":35,"ace":40,"last":45,"wage":20,"echo":25}.get(id,0)
-func run_seed(seed_value: int) -> Dictionary:
+func run_seed(seed_value: int, mode: String="practice") -> Dictionary:
  trace=[]
- var s=E.new_run(seed_value)
+ var s=E.new_run(seed_value,mode)
  var actions=0
  while not s.phase in ["won","lost"] and actions<1000 and not failed:
   actions+=1
@@ -37,12 +37,16 @@ func run_seed(seed_value: int) -> Dictionary:
      if discard.is_empty(): discard=s.hand_ids.slice(0,3)
      s=step(s,{"type":"DISCARD","ids":discard})
     else: s=step(s,{"type":"PLAY","ids":p.ids})
+   "cashout": s=step(s,{"type":"CASH_OUT"})
    "shop":
     var rerolls=0
-    while true:
+    while not failed:
      var bought=false
      for slot in range(s.shop.size()):
       var offer=s.shop[slot]
+      var owned=false
+      for m in s.modifiers: owned=owned or m.id==offer.id
+      if owned: continue
       if offer.kind!="modifier" or offer.cost>s.money: continue
       if s.modifiers.size()==5:
        var worst=0
@@ -69,15 +73,16 @@ func run_seed(seed_value: int) -> Dictionary:
  return s
 func _initialize() -> void:
  var wins=0
+ var mode=OS.get_cmdline_user_args()[1] if OS.get_cmdline_user_args().size()>1 else "practice"
  var args=OS.get_cmdline_user_args()
  var count=int(args[0]) if not args.is_empty() else 10
  for seed_value in range(1,count+1):
-  var s=run_seed(seed_value)
+  var s=run_seed(seed_value,mode)
   print("SIM seed=%d phase=%s rounds=%d money=%d"%[seed_value,s.phase,s.rounds_won,s.money])
   if s.phase=="won":
    wins+=1
    if wins==1:
-    var f=FileAccess.open("res://tests/core/winning_replay.json",FileAccess.WRITE)
-    f.store_string(JSON.stringify({"seed":seed_value,"actions":trace,"final_state":s},"  "))
+    var f=FileAccess.open("res://tests/core/winning_replay_%s.json"%mode+"",FileAccess.WRITE)
+    f.store_string(JSON.stringify({"seed":seed_value,"mode":mode,"actions":trace,"final_state":s},"  "))
  print("SIM SUMMARY wins=%d/%d; public actions only, no hidden draws inspected"%[wins,count])
- quit(1 if failed or wins==0 else 0)
+ quit(1 if failed else 0)

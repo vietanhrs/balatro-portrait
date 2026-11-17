@@ -1,16 +1,15 @@
-# Verification — 2026-11-15
+# Verification — v0.2.0-alpha, 2026-11-17
 
-Godot 4.7.2 stable, Compatibility renderer, Linux desktop.
+Parent screenshot review accepted the redesign on 2026-11-17; source publication approved. A new APK prerelease is not published.
 
-- Core: 1453 assertions, zero failures. Coverage and fixtures documented in `tests/core/README.md`.
-- Save: nine checks passed (versioned roundtrip, deterministic continuation, invalid rejection, backup corruption recovery and clearing).
-- UI smoke: zero failures at 360×640 and 430×932; card layout, stable selection, controls, overlay/back and presentation fixtures.
-- Full UI run: seed 1, 151 legal replay actions, 24 round victories, six fresh UI instances resumed from real disk checkpoints. Every action matched engine output and its autosave. Separate legal low-scoring play reached loss. No injected money/levels/cards/targets.
-- Rendered playing/shop/blind screens inspected: readable original card faces, eight-card grid, fixed primary controls, vertically scrolling shop.
-- Repository scan found no local machine paths, signing files, SDK/JDK binaries or credential patterns in staged source. This is a bounded hygiene check, not a security certification.
+Godot 4.7.2 Compatibility, Linux desktop: 1793 core checks and 483 v2 checks, zero failures. Save suite 12 checks; real v1 migration 14 checks; legacy three-offer compatibility 11 checks; recovery confirmation/archive UI 7 checks, all passed. UI smoke, transaction persistence and measured visual fixture suites passed. Updated legal Practice replay completes 179 UI actions/24 wins with seven fresh-instance disk resumes and separate real loss path; not a human playthrough.
 
-The full-run test calls UI handlers; it does not simulate a human touchscreen session. Layout fixtures do not prove every interactive path. No human playthrough or broad balance/accessibility certification is claimed.
+Rendered 18 route/idle/selected/scoring/receipt/shop/pack/detail/targeting images at 360×640 and 430×932 were inspected. Tested visible controls meet 48×48 logical minimum and viewport bounds; eight-card table and primary actions do not scroll. Receipt/shop/pack captures include explicitly synthetic layout fixtures, not balance evidence. Tall screens intentionally have generous whitespace. Motion uses source highlights, not full physics choreography.
 
-Android debug APK exported and verified with APK Signature v2/v3, portrait manifest, package org.vietanhrs.velvetcircuit, ARM64 and x86_64 libraries, min API24 / target API36. AOSP API35 x86_64 emulator (720×1280, KVM, host Intel graphics) installed and launched the APK. Injected touch selected cards, discarded, played a flush to score 284 against 150, and bought North Star ($10 → $6). Back closes help, then opens menu after fixing SceneTree.quit_on_go_back. Background/foreground and force-stop/relaunch preserved the exact save checksum; Resume restored shop and owned modifier. Wi-Fi/mobile data disabled; APK has no Internet permission. Final runtime log had no Godot script errors or AndroidRuntime crash.
+Android: new debug APK upgraded installed v0.1 on isolated AOSP API35 x86_64 emulator using install -r, same certificate, no data clear. VersionCode2/name0.2.0-alpha, ARM64+x86_64, minAPI24/targetAPI36, portrait, no Internet permission; Godot notices bundled, tests/tools/private screenshots absent. Real v1 installed shop resumed; original archive SHA256 equals original installed save.
 
-Initial software SwiftShader failed shader uniform limits; host graphics resolved rendering without gameplay changes. This is one emulator smoke, not physical ARM64 certification or a full Android 24-round run. Full 24-round replay remains desktop automated coverage. Debug signing is developmental, not a production signing identity.
+Native injected-touch seed531: selected/played high card then three jacks, won Small at196/150; cashout $5 ($4→$9); opened Tarot pack $4; force-stop restored exact options/checkpoint; targeting cancelled with Back without save mutation; Chip Etching applied +20 to c1_3; Big cleared using two pair and straight; cashout left $12; bought Side Pocket $10, capacity3, preserved after background and force-stop/resume. Separate fresh run discarded one card (3→2). Back closes overlay and opens menu without quitting. Offline Wi-Fi/data disabled. No script errors or AndroidRuntime crashes in final log.
+
+Receipt, pack and purchased-voucher saves had byte-identical hashes across force-stop/relaunch. Native 720×1280 and tall860×1864 captures inspected; exact requested logical dimensions are covered by desktop renders. Physical ARM64/notches/broad Android versions remain untested. Two native rounds are not a full Android run.
+
+Balance: core author supplied honest greedy seeds1–5 Practice4/5 wins and seeds1–3 Standard0/3. Standard is prominently experimental; no balance certification.

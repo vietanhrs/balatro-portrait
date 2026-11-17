@@ -1,0 +1,197 @@
+{
+  "blocked": false,
+  "category": "high_card",
+  "chips": 15,
+  "error": "",
+  "mult": 12.0,
+  "scoring_ids": [
+    "c0_2"
+  ],
+  "timeline": [
+    {
+      "after": {
+        "chips": 5,
+        "mult": 1.0,
+        "total": 5
+      },
+      "before": {
+        "chips": 0,
+        "mult": 0.0,
+        "total": 0
+      },
+      "delta": {
+        "chips": 5,
+        "mult": 1.0
+      },
+      "label": "score_base",
+      "operation": "set",
+      "seq": 0,
+      "source": {
+        "category": "high_card",
+        "level": 1
+      },
+      "source_id": "high_card",
+      "stage": "base",
+      "target_id": "",
+      "type": "score_base"
+    },
+    {
+      "after": {
+        "chips": 15,
+        "mult": 1.0,
+        "total": 15
+      },
+      "before": {
+        "chips": 5,
+        "mult": 1.0,
+        "total": 5
+      },
+      "delta": {
+        "chips": 10,
+        "mult": 0.0
+      },
+      "label": "card_chips",
+      "operation": "add",
+      "seq": 1,
+      "source": {
+        "bonus_chips": 0,
+        "id": "c0_2",
+        "rank": 12,
+        "suit": 1
+      },
+      "source_id": "c0_2",
+      "stage": "card",
+      "target_id": "c0_2",
+      "type": "card_chips"
+    },
+    {
+      "after": {
+        "chips": 15,
+        "mult": 6.0,
+        "total": 90
+      },
+      "before": {
+        "chips": 15,
+        "mult": 1.0,
+        "total": 15
+      },
+      "delta": {
+        "chips": 0,
+        "mult": 5.0
+      },
+      "label": "Court Stamp",
+      "operation": "add",
+      "seq": 2,
+      "source": {
+        "cost": 4,
+        "description": "Scoring face cards: +5 multiplier each.",
+        "family": "passive",
+        "id": "court",
+        "instance_id": "i4",
+        "name": "Court Stamp",
+        "rarity": "common",
+        "stage": "on_score",
+        "stored": 0
+      },
+      "source_id": "i4",
+      "stage": "on_score",
+      "target_id": "c0_2",
+      "type": "passive_score"
+    },
+    {
+      "after": {
+        "chips": 15,
+        "mult": 8.0,
+        "total": 120
+      },
+      "before": {
+        "chips": 15,
+        "mult": 6.0,
+        "total": 90
+      },
+      "delta": {
+        "chips": 0,
+        "mult": 2.0
+      },
+      "label": "Quiet Observatory",
+      "operation": "add",
+      "seq": 3,
+      "source": {
+        "cost": 6,
+        "description": "Held aces: +2 multiplier each.",
+        "family": "passive",
+        "id": "echo",
+        "instance_id": "i3",
+        "name": "Quiet Observatory",
+        "rarity": "uncommon",
+        "stage": "held",
+        "stored": 0
+      },
+      "source_id": "i3",
+      "stage": "held",
+      "target_id": "c0_3",
+      "type": "held_mult"
+    },
+    {
+      "after": {
+        "chips": 15,
+        "mult": 12.0,
+        "total": 180
+      },
+      "before": {
+        "chips": 15,
+        "mult": 8.0,
+        "total": 120
+      },
+      "delta": {
+        "chips": 0,
+        "mult": 4.0
+      },
+      "label": "Pocket Engine",
+      "operation": "multiply",
+      "seq": 4,
+      "source": {
+        "cost": 6,
+        "description": "Play at most three cards: ×1.5 multiplier.",
+        "family": "passive",
+        "id": "compact",
+        "instance_id": "i2",
+        "name": "Pocket Engine",
+        "rarity": "uncommon",
+        "stage": "independent",
+        "stored": 0
+      },
+      "source_id": "i2",
+      "stage": "independent",
+      "target_id": "",
+      "type": "passive_mult"
+    },
+    {
+      "after": {
+        "chips": 15,
+        "mult": 12.0,
+        "total": 180
+      },
+      "before": {
+        "chips": 15,
+        "mult": 12.0,
+        "total": 180
+      },
+      "delta": {
+        "chips": 0,
+        "mult": 0.0
+      },
+      "label": "score_total",
+      "operation": "multiply",
+      "seq": 5,
+      "source": {
+        "blocked": false
+      },
+      "source_id": "high_card",
+      "stage": "total",
+      "target_id": "",
+      "type": "score_total"
+    }
+  ],
+  "total": 180
+}

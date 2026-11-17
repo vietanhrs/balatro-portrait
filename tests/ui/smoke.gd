@@ -16,6 +16,7 @@ func run() -> void:
 	check(ui.engine != null, "Real engine loaded")
 	# Do not overwrite any player's checkpoint during automated testing.
 	ui.saves = null
+	ui.reduced_motion = true
 	ui._new_run(531)
 	check(ui.state.phase == "blind_select", "New run reaches blind selection")
 	ui._act({"type":"SELECT_BLIND"})

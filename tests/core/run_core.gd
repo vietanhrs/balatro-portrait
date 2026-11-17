@@ -5,7 +5,14 @@ var failures = 0
 func check(ok: bool, label: String) -> void:
  checks+=1
  if not ok: failures+=1; printerr("FAIL: ",label)
+func sync_fixture(s: Dictionary) -> void:
+ s.hands_played_this_round=s.played_categories.size()
+ for list in [s.modifiers,s.consumables]:
+  for item in list:
+   if not item.has("instance_id"): E._instance(s,item)
+
 func act(s: Dictionary, a: Dictionary) -> Dictionary:
+ sync_fixture(s)
  var before = JSON.stringify(s)
  var r = E.dispatch(s,a)
  check(r.error=="","action "+str(a)+" "+r.error)
@@ -13,9 +20,10 @@ func act(s: Dictionary, a: Dictionary) -> Dictionary:
  check(E.validate_save(r.state),"valid action result")
  var restored = JSON.parse_string(JSON.stringify(s))
  var rr = E.dispatch(restored,a)
- check(JSON.stringify(rr.state)==JSON.stringify(r.state),"JSON replay parity")
+ check(JSON.stringify(E._normalize(rr.state))==JSON.stringify(E._normalize(r.state)),"JSON replay parity")
  return r.state
 func reject(s: Dictionary,a: Dictionary) -> void:
+ sync_fixture(s)
  var before = JSON.stringify(s)
  var r = E.dispatch(s,a)
  check(r.error!="" and JSON.stringify(r.state)==before and JSON.stringify(s)==before,"transactional rejection "+str(a))
@@ -30,6 +38,7 @@ func fixture(ranks: Array, suits: Array=[]) -> Dictionary:
   s.draw_ids.erase(c.id)
  return s
 func score(s: Dictionary,n: int) -> Dictionary:
+ sync_fixture(s)
  var before = JSON.stringify(s)
  var p = E.preview(s,s.hand_ids.slice(0,n))
  check(p.error=="","preview success")
@@ -38,9 +47,10 @@ func score(s: Dictionary,n: int) -> Dictionary:
 func boss(s: Dictionary,id: String) -> void:
  s.round=2
  s.rounds_won=2
- s.history=[{"ante":1,"round":0,"score":150,"reward":3,"interest":0},{"ante":1,"round":1,"score":225,"reward":4,"interest":0}]
+ s.history=[{"ante":1,"round":0,"score":150,"reward":3,"interest":0,"outcome":"won"},{"ante":1,"round":1,"score":225,"reward":4,"interest":0,"outcome":"won"}]
  s.boss={"id":id,"name":E.BOSSES[id][0],"description":E.BOSSES[id][1]}
  s.last_boss=id
+ s.ante_blinds[2].boss=s.boss.duplicate(true)
 func _initialize() -> void:
  categories()
  effects()
@@ -128,7 +138,7 @@ func items() -> void:
   var s = fixture([14])
   s.consumables=[E.consumable(id)]
   var target=s.hand_ids[0]
-  var targets=[] if id.begins_with("study_") else [target]
+  var targets=[] if id.begins_with("study_") else ([s.hand_ids[1],target] if id=="rank_copy" else [target])
   reject(s,{"type":"USE","index":0,"targets":["missing"]})
   s=act(s,{"type":"USE","index":0,"targets":targets})
   check(s.consumables.is_empty(),"consumed "+id)
@@ -150,15 +160,19 @@ func economy() -> void:
   var s=fixture([14]); s.money=cash; s.target=16
   s.modifiers=[E.modifier("wage")]
   s=act(s,{"type":"PLAY","ids":[s.hand_ids[0]]})
+  check(s.phase=="cashout" and s.money==cash,"pending receipt no payment")
+  s=act(s,{"type":"CASH_OUT"})
   check(s.phase=="shop" and s.money==cash+9+mini(cash/5,5),"interest snapshot "+str(cash))
   reject(s,{"type":"PLAY","ids":[s.hand_ids[0]]})
  var s=fixture([14]); s.target=16; s.money=50
  s=act(s,{"type":"PLAY","ids":[s.hand_ids[0]]})
+ s=act(s,{"type":"CASH_OUT"})
  var cash=s.money
  s=act(s,{"type":"REROLL"})
  check(s.money==cash-5 and s.reroll_cost==6,"reroll five")
  s=act(s,{"type":"REROLL"})
  check(s.money==cash-11 and s.reroll_cost==7,"reroll six")
+ s.shop[0]=E._instance(s,E.modifier("ember")); s.shop[0]["kind"]="modifier"; s.shop[0]["offer_id"]=s.shop[0].instance_id
  var cost=s.shop[0].cost
  cash=s.money
  s=act(s,{"type":"BUY","slot":0})
@@ -169,6 +183,7 @@ func economy() -> void:
  reject(s,{"type":"BUY","slot":0})
  reject(s,{"type":"REROLL"})
  s.money=50
+ s.shop[0]=E._instance(s,E.modifier("last")); s.shop[0]["kind"]="modifier"; s.shop[0]["offer_id"]=s.shop[0].instance_id
  for id in E.MODS.keys().slice(0,5): s.modifiers.append(E.modifier(id))
  reject(s,{"type":"BUY","slot":0})
  s=act(s,{"type":"NEXT"})
@@ -188,7 +203,7 @@ func bosses() -> void:
  boss(s,"narrow_gate")
  s=act(s,{"type":"SELECT_BLIND"})
  check(s.hand_ids.size()==7,"narrow seven")
- s=E.new_run(9); s.ante=8; s.round=2; E._prepare(s)
+ s=E.new_run(9); s.ante=8; s.round=2; E._route(s); E._prepare(s)
  check(s.boss.id=="basalt_crown" and s.target==E.TARGETS[7]*3,"final boss target")
 func saves() -> void:
  var s=E.new_run(-9223372036854775807)
@@ -223,6 +238,8 @@ func transitions() -> void:
   for k in s.levels: s.levels[k]=100
   var ids=s.hand_ids.slice(0,5)
   s=act(s,{"type":"PLAY","ids":ids})
+  check(s.phase=="cashout","explicit receipt gate")
+  s=act(s,{"type":"CASH_OUT"})
   check(s.phase==("won" if n==23 else "shop"),"round victory "+str(n))
   if n<23: s=act(s,{"type":"NEXT"})
  check(s.history.size()==24,"24 rewards once")
@@ -230,7 +247,7 @@ func transitions() -> void:
  reject(s,{"type":"REORDER","ids":[]})
  s=fixture([14]); s.hands_left=1; s.played_categories=["pair","pair","pair"]; s.target=16
  s=act(s,{"type":"PLAY","ids":[s.hand_ids[0]]})
- check(s.phase=="shop","last hand exact target wins before loss")
+ check(s.phase=="cashout","last hand exact target wins before loss")
  s=fixture([2]); s.hands_left=1; s.played_categories=["pair","pair","pair"]
  s=act(s,{"type":"PLAY","ids":[s.hand_ids[0]]})
  check(s.phase=="lost","last hand loss")
@@ -250,6 +267,7 @@ func edges() -> void:
  check(s.deck[0].bonus_chips==20,"etch replaces not stacks")
  s=fixture([14]); s.target=16; s.money=30
  s=act(s,{"type":"PLAY","ids":[s.hand_ids[0]]})
+ s=act(s,{"type":"CASH_OUT"})
  s.consumables=[E.consumable("rank_lift")]
  var target=s.draw_ids[0]
  var rank=E._card(s,target).rank
@@ -266,11 +284,11 @@ func edges() -> void:
   bad=s.duplicate(true); bad.shop=[value]
   check(not E.validate_save(bad),"reject malformed shop")
 func replay() -> void:
- if not FileAccess.file_exists("res://tests/core/winning_replay.json"):
+ if not FileAccess.file_exists("res://tests/core/winning_replay_practice.json"):
   check(false,"winning replay exists"); return
- var record=JSON.parse_string(FileAccess.get_file_as_string("res://tests/core/winning_replay.json"))
- var s=E.new_run(int(record.seed))
+ var record=JSON.parse_string(FileAccess.get_file_as_string("res://tests/core/winning_replay_practice.json"))
+ var s=E.new_run(int(record.seed),record.get("mode","practice"))
  for action in record.actions:
   s=act(s,action)
  check(s.phase=="won" and s.rounds_won==24,"honest winning replay")
- check(JSON.stringify(s)==JSON.stringify(E._normalize(record.final_state)),"winning replay exact final state")
+ check(JSON.stringify(E._normalize(s))==JSON.stringify(E._normalize(record.final_state)),"winning replay exact final state")

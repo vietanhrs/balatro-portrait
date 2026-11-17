@@ -14,10 +14,11 @@ func capture(label: String) -> void:
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("res://tests/ui/integration-%s.png" % label)
 func run() -> void:
-	var replay = JSON.parse_string(FileAccess.get_file_as_string("res://tests/core/winning_replay.json"))
+	var replay = JSON.parse_string(FileAccess.get_file_as_string("res://tests/core/winning_replay_practice.json"))
 	var ui = load("res://scenes/main.tscn").instantiate()
 	root.add_child(ui)
 	await settle()
+	ui.reduced_motion = true
 	ui._new_run(int(replay.seed))
 	var actions = 0
 	var captured = {}
@@ -44,6 +45,7 @@ func run() -> void:
 			ui = load("res://scenes/main.tscn").instantiate()
 			root.add_child(ui)
 			await settle()
+			ui.reduced_motion = true
 			ui._resume()
 			check(ui.state == prior, "Fresh UI instance resumes exact persisted checkpoint")
 		await process_frame
@@ -64,5 +66,5 @@ func run() -> void:
 	ui.saves.clear_run()
 	ui.queue_free()
 	await settle()
-	print("UI_FULL_RUN actions=", actions, " rounds=24 fresh_resume=6 real_loss=true failures=", failures)
+	print("UI_FULL_RUN actions=", actions, " rounds=24 fresh_resume=7 real_loss=true failures=", failures)
 	quit(1 if failures else 0)

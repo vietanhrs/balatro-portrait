@@ -1,0 +1,552 @@
+{
+  "action_seq": 3,
+  "ante": 1,
+  "ante_blinds": [
+    {
+      "boss": {},
+      "name": "Small",
+      "round": 0,
+      "status": "won",
+      "tag": "cash",
+      "target": 150
+    },
+    {
+      "boss": {},
+      "name": "Big",
+      "round": 1,
+      "status": "locked",
+      "tag": "free_planet",
+      "target": 225
+    },
+    {
+      "boss": {
+        "description": "A category can score only on its first play.",
+        "id": "changing_signal",
+        "name": "Changing Signal"
+      },
+      "name": "Boss",
+      "round": 2,
+      "status": "locked",
+      "tag": "",
+      "target": 300
+    }
+  ],
+  "boss": {},
+  "consumable_capacity": 2,
+  "consumables": [],
+  "deck": [
+    {
+      "bonus_chips": 0,
+      "id": "c0_2",
+      "rank": 14,
+      "suit": 0
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_3",
+      "rank": 3,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_4",
+      "rank": 4,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_5",
+      "rank": 5,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_6",
+      "rank": 6,
+      "suit": 0
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_7",
+      "rank": 7,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_8",
+      "rank": 8,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_9",
+      "rank": 9,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_10",
+      "rank": 10,
+      "suit": 0
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_11",
+      "rank": 11,
+      "suit": 0
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_12",
+      "rank": 12,
+      "suit": 0
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_13",
+      "rank": 13,
+      "suit": 0
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c0_14",
+      "rank": 14,
+      "suit": 0
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_2",
+      "rank": 2,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_3",
+      "rank": 3,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_4",
+      "rank": 4,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_5",
+      "rank": 5,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_6",
+      "rank": 6,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_7",
+      "rank": 7,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_8",
+      "rank": 8,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_9",
+      "rank": 9,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_10",
+      "rank": 10,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_11",
+      "rank": 11,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_12",
+      "rank": 12,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_13",
+      "rank": 13,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c1_14",
+      "rank": 14,
+      "suit": 1
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_2",
+      "rank": 2,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_3",
+      "rank": 3,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_4",
+      "rank": 4,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_5",
+      "rank": 5,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_6",
+      "rank": 6,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_7",
+      "rank": 7,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_8",
+      "rank": 8,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_9",
+      "rank": 9,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_10",
+      "rank": 10,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_11",
+      "rank": 11,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_12",
+      "rank": 12,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_13",
+      "rank": 13,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c2_14",
+      "rank": 14,
+      "suit": 2
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_2",
+      "rank": 2,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_3",
+      "rank": 3,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_4",
+      "rank": 4,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_5",
+      "rank": 5,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_6",
+      "rank": 6,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_7",
+      "rank": 7,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_8",
+      "rank": 8,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_9",
+      "rank": 9,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_10",
+      "rank": 10,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_11",
+      "rank": 11,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_12",
+      "rank": 12,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_13",
+      "rank": 13,
+      "suit": 3
+    },
+    {
+      "bonus_chips": 0,
+      "id": "c3_14",
+      "rank": 14,
+      "suit": 3
+    }
+  ],
+  "discards_left": 3,
+  "discards_per_round": 3,
+  "draw_ids": [
+    "c0_10",
+    "c0_11",
+    "c0_12",
+    "c0_13",
+    "c0_14",
+    "c1_2",
+    "c1_3",
+    "c1_4",
+    "c1_5",
+    "c1_6",
+    "c1_7",
+    "c1_8",
+    "c1_9",
+    "c1_10",
+    "c1_11",
+    "c1_12",
+    "c1_13",
+    "c1_14",
+    "c2_2",
+    "c2_3",
+    "c2_4",
+    "c2_5",
+    "c2_6",
+    "c2_7",
+    "c2_8",
+    "c2_9",
+    "c2_10",
+    "c2_11",
+    "c2_12",
+    "c2_13",
+    "c2_14",
+    "c3_2",
+    "c3_3",
+    "c3_4",
+    "c3_5",
+    "c3_6",
+    "c3_7",
+    "c3_8",
+    "c3_9",
+    "c3_10",
+    "c3_11",
+    "c3_12",
+    "c3_13"
+  ],
+  "hand_ids": [
+    "c0_3",
+    "c0_4",
+    "c0_5",
+    "c0_6",
+    "c0_7",
+    "c0_8",
+    "c0_9",
+    "c3_14"
+  ],
+  "hand_size": 8,
+  "hands_left": 3,
+  "hands_per_round": 4,
+  "hands_played_this_round": 1,
+  "history": [
+    {
+      "ante": 1,
+      "interest": 5,
+      "outcome": "won",
+      "reward": 11,
+      "round": 0,
+      "score": 16
+    }
+  ],
+  "last_boss": "changing_signal",
+  "levels": {
+    "five_of_a_kind": 1,
+    "flush": 1,
+    "flush_five": 1,
+    "flush_house": 1,
+    "four_of_a_kind": 1,
+    "full_house": 1,
+    "high_card": 1,
+    "pair": 1,
+    "straight": 1,
+    "straight_flush": 1,
+    "three_of_a_kind": 1,
+    "two_pair": 1
+  },
+  "mode": "practice",
+  "modifiers": [],
+  "money": 107,
+  "next_instance_id": 11,
+  "pack_offers": [],
+  "pack_state": {
+    "family": "passive",
+    "offer_id": "i6",
+    "options": [
+      {
+        "cost": 4,
+        "description": "Scoring face cards: +5 multiplier each.",
+        "family": "passive",
+        "id": "court",
+        "instance_id": "i7",
+        "name": "Court Stamp",
+        "option_id": "i8",
+        "rarity": "common",
+        "stage": "on_score",
+        "stored": 0
+      },
+      {
+        "cost": 4,
+        "description": "Scoring face cards: +5 multiplier each.",
+        "family": "passive",
+        "id": "court",
+        "instance_id": "i9",
+        "name": "Court Stamp",
+        "option_id": "i10",
+        "rarity": "common",
+        "stage": "on_score",
+        "stored": 0
+      }
+    ],
+    "remaining": 1,
+    "seed": 1037491068,
+    "target_ids": []
+  },
+  "passive_capacity": 5,
+  "phase": "pack_select",
+  "played_categories": [
+    "high_card"
+  ],
+  "purchased_vouchers": [],
+  "receipt": {
+    "interest_base": 100,
+    "interest_cap": 5,
+    "line_items": [
+      {
+        "amount": 3,
+        "id": "blind",
+        "label": "Blind reward"
+      },
+      {
+        "amount": 3,
+        "id": "hands",
+        "label": "Unused hands"
+      },
+      {
+        "amount": 5,
+        "id": "interest",
+        "label": "Interest"
+      }
+    ],
+    "money_after": 111,
+    "money_before": 100,
+    "paid": true,
+    "total": 11
+  },
+  "reroll_cost": 5,
+  "rng_state": 1037491068,
+  "round": 0,
+  "round_score": 16,
+  "rounds_won": 1,
+  "seed": 7,
+  "shop": [
+    {
+      "cost": 6,
+      "description": "Adds stored chips; gains 3 after each scoring hand.",
+      "family": "passive",
+      "id": "growth",
+      "instance_id": "i2",
+      "kind": "modifier",
+      "name": "Trail Marker",
+      "offer_id": "i2",
+      "rarity": "uncommon",
+      "stage": "independent",
+      "stored": 0
+    },
+    {
+      "cost": 3,
+      "description": "Level up Two Pair.",
+      "family": "planet",
+      "id": "study_two_pair",
+      "instance_id": "i3",
+      "kind": "consumable",
+      "name": "Study Two Pair",
+      "offer_id": "i3",
+      "target_count": 0
+    }
+  ],
+  "tags": [],
+  "target": 16,
+  "used_ids": [
+    "c0_2"
+  ],
+  "version": 2,
+  "voucher_offer": {
+    "cost": 10,
+    "description": "Reroll base costs $2 less.",
+    "id": "thrift",
+    "name": "Lean Market",
+    "offer_id": "i1",
+    "purchased": false
+  }
+}

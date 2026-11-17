@@ -1,13 +1,14 @@
 # Velvet Circuit
 
-An original, offline, portrait poker roguelike built with Godot 4.7.2. Match poker hands, build an ordered modifier engine, alter your deck, and attempt eight antes across 24 rounds. The repository name describes its inspiration, not an official Android port.
+An original offline portrait poker roguelike for Godot 4.7.2. Build hands, order passive effects and attempt eight antes. Unofficial independent work inspired by Balatro; not affiliated with LocalThunk or Playstack. No proprietary game code, artwork, music or video frames are included.
 
-Unofficial independent poker roguelike inspired by Balatro. Not affiliated with or endorsed by LocalThunk or Playstack. Balatro and related marks belong to their respective owners. No proprietary game code, graphics, music, or copied wiki prose is included.
+## v0.2.0-alpha redesign
+Original felt/card UI, blue Chips × red Mult, staged scoring, three-ticket route, explicit cashout receipt, mixed shop shelves, four normal pack families and four run vouchers. Twenty original passives, seventeen consumables, six bosses and three original skip-tag effects; not complete reference-game parity.
 
-## Play
-Select one to five cards; play to score or discard to replace them. Chips multiply by Mult. Only the scoring subset contributes card chips. Order matters for modifier effects. Buy upgrades between rounds; inspect boss restrictions before starting. Successful actions autosave locally. No real-money gambling, ads, payments, or backend.
+**Practice is recommended. Standard is experimental and not established as balanced.** Small fixed-seed greedy simulations: Practice 4/5 wins; Standard 0/3. These are automated tiny samples, not a human fairness claim.
 
-## Status
-Development prototype. Desktop checks: 1453 core assertions, nine save checks, portrait UI smoke, and a legal full-run UI replay with persistent resume. These are automated checks, not a human playthrough. A debug APK is available in [Releases](https://github.com/vietanhrs/balatro-portrait/releases). Android API 35 x86_64 emulator smoke verified touch play/discard/shop, Back, offline operation and force-stop/resume. ARM64 is bundled but physical-device testing remains unverified. See [BUILDING.md](BUILDING.md), [LIMITATIONS.md](LIMITATIONS.md), and [RESEARCH.md](RESEARCH.md).
+Successful transactions autosave before animations. v1 checkpoints migrate to Practice with an exact original archive; failed recovery requires confirmation before archived reset. No ads, real-money gambling, purchases, backend or Internet permission.
 
-Original code and original procedural artwork are MIT-licensed by default; third-party engine/runtime components retain their licenses. See [LICENSE](LICENSE), [PROVENANCE.md](PROVENANCE.md), and [THIRD_PARTY.md](THIRD_PARTY.md).
+Parent visual review accepted the redesign on 2026-11-17. Source update approved; no new APK release published yet. Existing [Releases](https://github.com/vietanhrs/balatro-portrait/releases) are historical until explicitly updated. See [verification](docs/VERIFICATION.md), [acceptance](docs/REDESIGN_ACCEPTANCE.md), [building](BUILDING.md), [limitations](LIMITATIONS.md), and [research/video citations](RESEARCH.md).
+
+Original code and procedural artwork: MIT. Engine/runtime components retain their licenses: [LICENSE](LICENSE), [PROVENANCE](PROVENANCE.md), [THIRD_PARTY](THIRD_PARTY.md).
