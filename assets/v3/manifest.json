@@ -1,0 +1,514 @@
+{
+  "version": 3,
+  "license": "MIT",
+  "generated_by": "tools/art_v3/generate.py",
+  "assets": {
+    "background": {
+      "path": "res://assets/v3/background.png",
+      "size": [
+        512,
+        512
+      ],
+      "repeat": true
+    },
+    "background_flow": {
+      "path": "res://assets/v3/background_flow.png",
+      "size": [
+        512,
+        512
+      ],
+      "repeat": true
+    },
+    "background_grain": {
+      "path": "res://assets/v3/background_grain.png",
+      "size": [
+        512,
+        512
+      ],
+      "repeat": true
+    },
+    "panel": {
+      "path": "res://assets/v3/panel.png",
+      "size": [
+        256,
+        256
+      ],
+      "repeat": false,
+      "nine_slice_insets": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    "button": {
+      "path": "res://assets/v3/button.png",
+      "size": [
+        256,
+        96
+      ],
+      "repeat": false,
+      "nine_slice_insets": [
+        20,
+        20,
+        20,
+        20
+      ]
+    },
+    "card_front": {
+      "path": "res://assets/v3/card_front.png",
+      "size": [
+        256,
+        352
+      ],
+      "repeat": false,
+      "nine_slice_insets": [
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    "card_back": {
+      "path": "res://assets/v3/card_back.png",
+      "size": [
+        256,
+        352
+      ],
+      "repeat": false
+    },
+    "logo": {
+      "path": "res://assets/v3/logo.png",
+      "size": [
+        768,
+        256
+      ],
+      "repeat": false
+    }
+  },
+  "items": {
+    "passive": {
+      "ember": {
+        "path": "res://assets/v3/items/passive/ember.png",
+        "atlas_rect": [
+          2,
+          2,
+          192,
+          256
+        ]
+      },
+      "ledger": {
+        "path": "res://assets/v3/items/passive/ledger.png",
+        "atlas_rect": [
+          198,
+          2,
+          192,
+          256
+        ]
+      },
+      "twins": {
+        "path": "res://assets/v3/items/passive/twins.png",
+        "atlas_rect": [
+          394,
+          2,
+          192,
+          256
+        ]
+      },
+      "trio": {
+        "path": "res://assets/v3/items/passive/trio.png",
+        "atlas_rect": [
+          590,
+          2,
+          192,
+          256
+        ]
+      },
+      "ribbon": {
+        "path": "res://assets/v3/items/passive/ribbon.png",
+        "atlas_rect": [
+          786,
+          2,
+          192,
+          256
+        ]
+      },
+      "prism": {
+        "path": "res://assets/v3/items/passive/prism.png",
+        "atlas_rect": [
+          982,
+          2,
+          192,
+          256
+        ]
+      },
+      "red": {
+        "path": "res://assets/v3/items/passive/red.png",
+        "atlas_rect": [
+          1178,
+          2,
+          192,
+          256
+        ]
+      },
+      "black": {
+        "path": "res://assets/v3/items/passive/black.png",
+        "atlas_rect": [
+          1374,
+          2,
+          192,
+          256
+        ]
+      },
+      "court": {
+        "path": "res://assets/v3/items/passive/court.png",
+        "atlas_rect": [
+          2,
+          262,
+          192,
+          256
+        ]
+      },
+      "ace": {
+        "path": "res://assets/v3/items/passive/ace.png",
+        "atlas_rect": [
+          198,
+          262,
+          192,
+          256
+        ]
+      },
+      "even": {
+        "path": "res://assets/v3/items/passive/even.png",
+        "atlas_rect": [
+          394,
+          262,
+          192,
+          256
+        ]
+      },
+      "odd": {
+        "path": "res://assets/v3/items/passive/odd.png",
+        "atlas_rect": [
+          590,
+          262,
+          192,
+          256
+        ]
+      },
+      "reserve": {
+        "path": "res://assets/v3/items/passive/reserve.png",
+        "atlas_rect": [
+          786,
+          262,
+          192,
+          256
+        ]
+      },
+      "first": {
+        "path": "res://assets/v3/items/passive/first.png",
+        "atlas_rect": [
+          982,
+          262,
+          192,
+          256
+        ]
+      },
+      "last": {
+        "path": "res://assets/v3/items/passive/last.png",
+        "atlas_rect": [
+          1178,
+          262,
+          192,
+          256
+        ]
+      },
+      "compact": {
+        "path": "res://assets/v3/items/passive/compact.png",
+        "atlas_rect": [
+          1374,
+          262,
+          192,
+          256
+        ]
+      },
+      "bank": {
+        "path": "res://assets/v3/items/passive/bank.png",
+        "atlas_rect": [
+          2,
+          522,
+          192,
+          256
+        ]
+      },
+      "growth": {
+        "path": "res://assets/v3/items/passive/growth.png",
+        "atlas_rect": [
+          198,
+          522,
+          192,
+          256
+        ]
+      },
+      "wage": {
+        "path": "res://assets/v3/items/passive/wage.png",
+        "atlas_rect": [
+          394,
+          522,
+          192,
+          256
+        ]
+      },
+      "echo": {
+        "path": "res://assets/v3/items/passive/echo.png",
+        "atlas_rect": [
+          590,
+          522,
+          192,
+          256
+        ]
+      }
+    },
+    "planet": {
+      "study_high_card": {
+        "path": "res://assets/v3/items/planet/study_high_card.png",
+        "atlas_rect": [
+          786,
+          522,
+          192,
+          256
+        ]
+      },
+      "study_two_pair": {
+        "path": "res://assets/v3/items/planet/study_two_pair.png",
+        "atlas_rect": [
+          982,
+          522,
+          192,
+          256
+        ]
+      },
+      "study_three_of_a_kind": {
+        "path": "res://assets/v3/items/planet/study_three_of_a_kind.png",
+        "atlas_rect": [
+          1178,
+          522,
+          192,
+          256
+        ]
+      },
+      "study_full_house": {
+        "path": "res://assets/v3/items/planet/study_full_house.png",
+        "atlas_rect": [
+          1374,
+          522,
+          192,
+          256
+        ]
+      },
+      "study_four_of_a_kind": {
+        "path": "res://assets/v3/items/planet/study_four_of_a_kind.png",
+        "atlas_rect": [
+          2,
+          782,
+          192,
+          256
+        ]
+      },
+      "study_straight_flush": {
+        "path": "res://assets/v3/items/planet/study_straight_flush.png",
+        "atlas_rect": [
+          198,
+          782,
+          192,
+          256
+        ]
+      },
+      "study_pair": {
+        "path": "res://assets/v3/items/planet/study_pair.png",
+        "atlas_rect": [
+          394,
+          782,
+          192,
+          256
+        ]
+      },
+      "study_flush": {
+        "path": "res://assets/v3/items/planet/study_flush.png",
+        "atlas_rect": [
+          590,
+          782,
+          192,
+          256
+        ]
+      },
+      "study_straight": {
+        "path": "res://assets/v3/items/planet/study_straight.png",
+        "atlas_rect": [
+          786,
+          782,
+          192,
+          256
+        ]
+      }
+    },
+    "tarot": {
+      "diamond_dye": {
+        "path": "res://assets/v3/items/tarot/diamond_dye.png",
+        "atlas_rect": [
+          982,
+          782,
+          192,
+          256
+        ]
+      },
+      "club_dye": {
+        "path": "res://assets/v3/items/tarot/club_dye.png",
+        "atlas_rect": [
+          1178,
+          782,
+          192,
+          256
+        ]
+      },
+      "rank_copy": {
+        "path": "res://assets/v3/items/tarot/rank_copy.png",
+        "atlas_rect": [
+          1374,
+          782,
+          192,
+          256
+        ]
+      },
+      "scarlet_dye": {
+        "path": "res://assets/v3/items/tarot/scarlet_dye.png",
+        "atlas_rect": [
+          2,
+          1042,
+          192,
+          256
+        ]
+      },
+      "ink_dye": {
+        "path": "res://assets/v3/items/tarot/ink_dye.png",
+        "atlas_rect": [
+          198,
+          1042,
+          192,
+          256
+        ]
+      },
+      "rank_lift": {
+        "path": "res://assets/v3/items/tarot/rank_lift.png",
+        "atlas_rect": [
+          394,
+          1042,
+          192,
+          256
+        ]
+      },
+      "chip_etching": {
+        "path": "res://assets/v3/items/tarot/chip_etching.png",
+        "atlas_rect": [
+          590,
+          1042,
+          192,
+          256
+        ]
+      },
+      "prune": {
+        "path": "res://assets/v3/items/tarot/prune.png",
+        "atlas_rect": [
+          786,
+          1042,
+          192,
+          256
+        ]
+      }
+    },
+    "voucher": {
+      "extra_hand": {
+        "path": "res://assets/v3/items/voucher/extra_hand.png",
+        "atlas_rect": [
+          982,
+          1042,
+          192,
+          256
+        ]
+      },
+      "extra_discard": {
+        "path": "res://assets/v3/items/voucher/extra_discard.png",
+        "atlas_rect": [
+          1178,
+          1042,
+          192,
+          256
+        ]
+      },
+      "extra_pocket": {
+        "path": "res://assets/v3/items/voucher/extra_pocket.png",
+        "atlas_rect": [
+          1374,
+          1042,
+          192,
+          256
+        ]
+      },
+      "thrift": {
+        "path": "res://assets/v3/items/voucher/thrift.png",
+        "atlas_rect": [
+          2,
+          1302,
+          192,
+          256
+        ]
+      }
+    },
+    "pack": {
+      "passive": {
+        "path": "res://assets/v3/items/pack/passive.png",
+        "atlas_rect": [
+          198,
+          1302,
+          192,
+          256
+        ]
+      },
+      "planet": {
+        "path": "res://assets/v3/items/pack/planet.png",
+        "atlas_rect": [
+          394,
+          1302,
+          192,
+          256
+        ]
+      },
+      "tarot": {
+        "path": "res://assets/v3/items/pack/tarot.png",
+        "atlas_rect": [
+          590,
+          1302,
+          192,
+          256
+        ]
+      },
+      "playing_card": {
+        "path": "res://assets/v3/items/pack/playing_card.png",
+        "atlas_rect": [
+          786,
+          1302,
+          192,
+          256
+        ]
+      }
+    }
+  },
+  "atlas": {
+    "path": "res://assets/v3/items_atlas.png",
+    "cell_size": [
+      196,
+      260
+    ],
+    "padding": 2
+  }
+}

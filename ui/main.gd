@@ -14,10 +14,6 @@ var reduced_motion := false
 var fast_motion := false
 var presentation_token := 0
 var snapshot: Dictionary = {}
-var timeline_value: Dictionary = {}
-var timeline_label := ""
-var timeline_source := ""
-var timeline_delta := ""
 var run_mode := "practice"
 var pack_choice := -1
 var targeting_pack := false
@@ -40,6 +36,27 @@ var save_failed := false
 var target_index := -1
 var target_ids: Array = []
 var menu_resume := false
+const Profile = preload("res://ui/profile_store.gd")
+var profile: Dictionary = {}
+var seeded_check: CheckBox
+var background_material: ShaderMaterial
+var table: Control
+var cards: Dictionary = {}
+var score_labels: Dictionary = {}
+var score_panels: Dictionary = {}
+var round_label: Label
+var category_label: Label
+var counts_label: Label
+var play_button: Button
+var discard_button: Button
+var skip_button: Button
+var motion_tweens: Array[Tween] = []
+var played_ids: Array = []
+var after_snapshot: Dictionary = {}
+var dispatch_count := 0
+var last_random_seed := 0
+var selection_tweens: Dictionary = {}
+
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -52,11 +69,27 @@ func _ready() -> void:
 		engine = load("res://core/game_engine.gd")
 	if ResourceLoader.exists("res://platform/save_store.gd"):
 		saves = load("res://platform/save_store.gd")
+	profile = Profile.read_profile()
+	reduced_motion = bool(profile.get("settings", {}).get("reduced_motion", false))
+	fast_motion = bool(profile.get("settings", {}).get("fast_motion", false))
 	var background := ColorRect.new()
 	background.color = FELT
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(background)
+	var texture_path := "res://assets/v3/background.png"
+	if ResourceLoader.exists(texture_path):
+		var art := TextureRect.new()
+		art.texture = load(texture_path)
+		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		background_material = ShaderMaterial.new()
+		background_material.shader = preload("res://ui/felt.gdshader")
+		background_material.set_shader_parameter("motion", 0.0 if reduced_motion else 1.0)
+		art.material = background_material
+		add_child(art)
 	theme = Theme.new()
 	theme.default_font_size = 15
 	theme.set_color("font_color", "Label", CREAM)
@@ -71,7 +104,17 @@ func _ready() -> void:
 	_safe_area()
 	_render()
 
-func _style(fill: Color, border: Color, radius: int = 8) -> StyleBoxFlat:
+func _style(fill: Color, border: Color, radius: int = 8) -> StyleBox:
+	var path := "res://assets/v3/button.png" if fill == GOLD else "res://assets/v3/panel.png"
+	if ResourceLoader.exists(path):
+		var skin := StyleBoxTexture.new()
+		skin.texture = load(path)
+		if fill == BLUE: skin.modulate_color = Color(0.35, 1.4, 2.8)
+		elif fill == RED: skin.modulate_color = Color(3.0, 0.65, 0.65)
+		for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
+			skin.set_texture_margin(side, 20)
+			skin.set_content_margin(side, 6 if side in [SIDE_TOP, SIDE_BOTTOM] else 10)
+		return skin
 	var box := StyleBoxFlat.new()
 	box.bg_color = fill
 	box.border_color = border
@@ -101,7 +144,9 @@ func _safe_area() -> void:
 	safe_area_changed.emit(inset)
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_back()
+	elif what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		_back()
 	elif what == NOTIFICATION_APPLICATION_PAUSED and not state.is_empty():
 		_save()
@@ -133,13 +178,16 @@ func _clear(node: Node) -> void:
 		child.queue_free()
 
 func _render() -> void:
+	if animating: return
+	cards.clear()
+	table = null
 	_clear(frame)
 	var layout := VBoxContainer.new()
 	layout.add_theme_constant_override("separation", 4)
 	frame.add_child(layout)
 	var top := HBoxContainer.new()
 	layout.add_child(top)
-	_label(top, "VELVET / CIRCUIT" if screen == "menu" else "A%s · %s" % [state.get("ante", 1), str(state.get("mode", "practice")).capitalize()], 16)
+	_label(top, "" if screen == "menu" else "A%s · %s" % [state.get("ante", 1), str(state.get("mode", "practice")).capitalize()], 16)
 	if screen != "menu": _label(top, "$%s" % state.get("money", 0), 24, GOLD)
 	_button(top, "☰", _settings, 48).size_flags_horizontal = Control.SIZE_SHRINK_END
 	body = VBoxContainer.new()
@@ -156,9 +204,6 @@ func _render() -> void:
 		screen = "menu"
 		_render()
 		return
-	if animating:
-		_scoring()
-		return
 	match str(state.get("phase", "")):
 		"playing": _hud(); _playing()
 		"blind_select": _blind()
@@ -171,11 +216,18 @@ func _render() -> void:
 	if save_failed: _label(body, "Save unavailable — keep this run open.", 14, CREAM)
 
 func _settings() -> void:
-	var box := _modal("Table settings")
-	_button(box, "Reduced motion: " + ("on" if reduced_motion else "off"), func(): reduced_motion = not reduced_motion; _settings())
-	_button(box, "Fast scoring: " + ("on" if fast_motion else "off"), func(): fast_motion = not fast_motion; _settings())
+	var box := _modal("Settings")
+	_button(box, "Reduced motion: " + ("on" if reduced_motion else "off"), func(): reduced_motion = not reduced_motion; _save_preferences(); _settings())
+	_button(box, "Fast scoring: " + ("on" if fast_motion else "off"), func(): fast_motion = not fast_motion; _save_preferences(); _settings())
 	_button(box, "How to play", _help)
-	_button(box, "Save & menu", func(): _close_overlay(); _finish_animation(); screen = "menu"; _render())
+	_button(box, "About", func(): _label(_modal("About"), "An independent, original poker roguelike."))
+	if screen != "menu": _button(box, "Save & menu", func(): _close_overlay(); _finish_animation(); screen = "menu"; _render())
+
+func _save_preferences() -> void:
+	profile["settings"] = {"reduced_motion": reduced_motion, "fast_motion": fast_motion}
+	Profile.save_profile(profile)
+	if background_material: background_material.set_shader_parameter("motion", 0.0 if reduced_motion else 1.0)
+	if animating and reduced_motion: _finish_animation()
 
 func _label(parent: Node, value: String, font_size: int = 15, color: Color = CREAM) -> Label:
 	var label := Label.new()
@@ -206,35 +258,71 @@ func _panel(parent: Node) -> VBoxContainer:
 	return contents
 
 func _menu() -> void:
-	_label(body, "A little luck.
-A deliberate order.", 32, CREAM)
-	_label(body, "An original portrait poker roguelike", 15, BLUE)
-	var box := _panel(body)
-	_label(box, "BUILD A RUN", 13, GOLD)
-	_label(box, "Practice recommended. Standard is EXPERIMENTAL: reference targets, balance not established.")
-	seed_input = LineEdit.new()
-	seed_input.placeholder_text = "Seed (optional number or word)"
-	seed_input.custom_minimum_size.y = 48
-	seed_input.max_length = 40
-	box.add_child(seed_input)
-	_button(box, "Mode: " + run_mode.capitalize(), func(): run_mode = "standard" if run_mode == "practice" else "practice"; _render())
-	_button(box, "New seeded run", _confirm_new).disabled = engine == null
-	var saved: Dictionary = {}
-	if saves != null:
-		saved = saves.load_run()
-	if saves != null and saves.recovery_required:
-		_label(box, "Save recovery required — original retained. New run requires confirmed reset.", 14, GOLD)
+	var spacer := Control.new()
+	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	body.add_child(spacer)
+	var logo := TextureRect.new()
+	logo.texture = preload("res://assets/v3/logo.png")
+	logo.custom_minimum_size = Vector2(0, 112)
+	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	body.add_child(logo)
+	var saved: Dictionary = saves.load_run() if saves != null else {}
 	menu_resume = not state.is_empty() or not saved.is_empty()
-	_button(box, "Resume run", _resume).disabled = not menu_resume
-	_button(box, "How to play", _help)
-	_label(body, "Cream cards • blue chips • coral multiplier", 13, GOLD)
-	_label(body, "Unofficial independent game inspired by Balatro. Not affiliated with LocalThunk or Playstack. No real-money gambling.", 12)
-	if engine == null:
-		_label(body, "Game engine is not installed. Gameplay is unavailable.", 14, RED)
+	_primary(_button(body, "Play", _run_setup))
+	if menu_resume: _button(body, "Resume", _resume)
+	_button(body, "Settings", _settings)
+	_button(body, "Statistics", _statistics)
+	_button(body, "Collections", _collections)
+	_button(body, "Quit", _back)
+
+func _run_setup() -> void:
+	var box := _modal("New run")
+	var mode := _button(box, "Mode: " + run_mode.capitalize(), func(): pass)
+	mode.pressed.connect(func(): run_mode = "standard" if run_mode == "practice" else "practice"; mode.text = "Mode: " + run_mode.capitalize())
+	seeded_check = CheckBox.new()
+	seeded_check.text = "Seeded"
+	seeded_check.custom_minimum_size.y = 48
+	box.add_child(seeded_check)
+	seed_input = LineEdit.new()
+	seed_input.placeholder_text = "Enter seed"
+	seed_input.max_length = 40
+	seed_input.custom_minimum_size.y = 48
+	seed_input.visible = false
+	box.add_child(seed_input)
+	seeded_check.toggled.connect(func(checked): seed_input.visible = checked)
+	_primary(_button(box, "Start run", _confirm_new))
+
+func _statistics() -> void:
+	var box := _modal("Statistics")
+	_label(box, "Tracked on this device since this profile began.", 14)
+	for key in ["runs", "plays", "discards", "wins", "losses", "best_hand"]:
+		_label(box, "%s   %s" % [key.replace("_", " ").capitalize(), profile.get(key, 0)], 22)
+
+func _collections() -> void:
+	var box := _modal("Collections")
+	var discovered: Dictionary = profile.get("discovered", {})
+	if discovered.is_empty(): _label(box, "No items discovered yet.")
+	for id in discovered:
+		var item: Dictionary = discovered[id]
+		var row := HBoxContainer.new()
+		box.add_child(row)
+		_item_card(row, item, func(): _collection_detail(item), 70, 100)
+		_label(row, str(item.get("name", id)), 20)
+
+func _collection_detail(item: Dictionary) -> void:
+	var box := _modal(str(item.get("name", "Item")))
+	_item_card(box, item, func(): pass, 120, 180)
+	_label(box, str(item.get("description", "")), 18)
 
 func _confirm_new() -> void:
-	var seed_text := seed_input.text.strip_edges()
-	var seed_value := int(Time.get_unix_time_from_system()) if seed_text.is_empty() else (int(seed_text) if seed_text.is_valid_int() else int(seed_text.hash()))
+	var seed_text := seed_input.text.strip_edges() if seeded_check.button_pressed else ""
+	if seeded_check.button_pressed and seed_text.is_empty():
+		seed_input.placeholder_text = "A seed is required"
+		seed_input.grab_focus()
+		return
+	var seed_value := _random_seed() if not seeded_check.button_pressed else (int(seed_text) if seed_text.is_valid_int() else int(seed_text.hash()))
 	if saves != null and saves.recovery_required:
 		var box := _modal("Save recovery required")
 		_label(box, saves.last_load_error)
@@ -251,12 +339,23 @@ func _confirm_new() -> void:
 		_button(box, "Start new run", func(): _close_overlay(); _new_run(seed_value))
 		_button(box, "Keep existing run", _close_overlay)
 	else:
+		_close_overlay()
 		_new_run(seed_value)
+
+func _random_seed() -> int:
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+	var value := int(rng.randi())
+	while value == last_random_seed: value = int(rng.randi())
+	last_random_seed = value
+	return value
 
 func _new_run(seed_value: int) -> void:
 	if engine == null: return
 	if saves != null and saves.recovery_required: return
 	state = engine.new_run(seed_value, run_mode)
+	profile["runs"] = int(profile.get("runs", 0)) + 1
+	Profile.save_profile(profile)
 	selected.clear()
 	sorted_ids.clear()
 	event_lines.clear()
@@ -283,6 +382,7 @@ func _save() -> void:
 func _act(action: Dictionary) -> void:
 	if engine == null or animating: return
 	var before := state.duplicate(true)
+	dispatch_count += 1
 	var result: Dictionary = engine.dispatch(state, action)
 	var error := str(result.get("error", ""))
 	if not error.is_empty():
@@ -295,19 +395,39 @@ func _act(action: Dictionary) -> void:
 	sorted_ids.clear()
 	event_lines = result.get("events", []).duplicate(true)
 	_save()
+	_track_action(action, before)
 	var upgrade: Dictionary = {}
 	for event in event_lines:
 		if event.get("type") == "hand_upgrade": upgrade = event
 	if not upgrade.is_empty():
 		_render()
 		_upgrade_detail(upgrade)
-	elif action.get("type") == "PLAY" and not reduced_motion:
-		snapshot = before
-		snapshot["played_ids"] = action.get("ids", []).duplicate()
+	elif action.get("type") in ["PLAY", "DISCARD"] and is_instance_valid(table):
+		snapshot = before.duplicate(true)
+		after_snapshot = state.duplicate(true)
+		played_ids = action.get("ids", []).duplicate()
 		animating = true
 		presentation_token += 1
-		_present(presentation_token)
-	else: _render()
+		if reduced_motion: _finish_animation()
+		else: _present_action(presentation_token, str(action.type))
+	else:
+		_render()
+		if action.get("type") == "SELECT_BLIND": _initial_deal()
+
+func _track_action(action: Dictionary, before: Dictionary) -> void:
+	var kind := str(action.get("type", ""))
+	var counter := "plays" if kind == "PLAY" else ("discards" if kind == "DISCARD" else "")
+	if not counter.is_empty(): profile[counter] = int(profile.get(counter, 0)) + 1
+	if state.get("phase") != before.get("phase") and state.get("phase") in ["won", "lost"]:
+		var key := "wins" if state.phase == "won" else "losses"
+		profile[key] = int(profile.get(key, 0)) + 1
+	for event in event_lines:
+		if event.get("type") == "score_total": profile["best_hand"] = maxf(float(profile.get("best_hand", 0)), float(event.get("after", {}).get("total", 0)))
+	var discovered: Dictionary = profile.get("discovered", {})
+	for item in state.get("modifiers", []) + state.get("consumables", []) + state.get("shop", []) + state.get("pack_state", {}).get("options", []):
+		if item.has("id"): discovered[str(item.id)] = item.duplicate(true)
+	profile["discovered"] = discovered
+	Profile.save_profile(profile)
 
 func _upgrade_detail(event: Dictionary) -> void:
 	var box := _modal("Study complete")
@@ -320,36 +440,35 @@ func _upgrade_detail(event: Dictionary) -> void:
 	_label(box, "New base · permanent for this run", 16)
 	_score_blocks(box, after)
 
-func _present(token: int) -> void:
-	timeline_value = {}
-	for event in event_lines:
-		if token != presentation_token or not animating: return
-		if not event is Dictionary: continue
-		if event.get("type") in ["action", "receipt"]: continue
-		timeline_label = str(event.get("label", event.get("type", "Scoring"))).replace("_", " ").capitalize()
-		timeline_source = str(event.get("source_id", ""))
-		timeline_delta = ""
-		var delta: Dictionary = event.get("delta", {})
-		if str(event.get("operation", "")) in ["multiply", "xmult", "×", "mul"]:
-			var before_mult := float(event.get("before", {}).get("mult", 0))
-			timeline_delta = "×%s multiplier" % _number(float(event.get("after", {}).get("mult", 0)) / before_mult) if before_mult > 0 else "× multiplier"
-		else:
-			for key in ["chips", "mult"]:
-				if float(delta.get(key, 0)) != 0: timeline_delta += "+%s %s  " % [_number(delta[key]), key]
-		if event.get("type") == "score_total": timeline_delta = "Chips × Mult → hand score"
-		if event.get("type") == "round_total": timeline_delta = "+%s to round score" % _number(delta.get("total", 0))
-		if event.get("after") is Dictionary and str(event.get("stage", "")) != "receipt": timeline_value.merge(event.after, true)
-		for key in ["chips", "mult", "total"]:
-			if event.has(key): timeline_value[key] = event[key]
-		_render()
-		await get_tree().create_timer(0.05 if fast_motion else clampf(1.6 / maxf(event_lines.size(), 1), 0.06, 0.22)).timeout
-	if token == presentation_token: _finish_animation()
-
 func _finish_animation() -> void:
 	presentation_token += 1
+	for tween in motion_tweens:
+		if tween.is_valid(): tween.kill()
+	motion_tweens.clear()
 	animating = false
+	if is_instance_valid(table):
+		for child in table.get_children():
+			if child is Label: child.queue_free()
+	for panel in score_panels.values():
+		if is_instance_valid(panel): panel.scale = Vector2.ONE
+	if is_instance_valid(category_label): category_label.scale = Vector2.ONE
 	snapshot.clear()
-	_render()
+	after_snapshot.clear()
+	played_ids.clear()
+	if is_instance_valid(table) and screen == "game" and state.get("phase") == "playing":
+		for id in cards.keys():
+			if not state.get("hand_ids", []).has(id):
+				cards[id].queue_free()
+				cards.erase(id)
+		_sort_ids()
+		for id in sorted_ids:
+			if not cards.has(str(id)): _spawn_card(str(id))
+		for card in cards.values():
+			card.rotation = 0
+			card.scale = Vector2.ONE
+		_layout_hand(false)
+		_refresh_table()
+	else: _render()
 
 func _score_blocks(parent: Node, values: Dictionary) -> void:
 	var row := HBoxContainer.new()
@@ -360,58 +479,28 @@ func _score_blocks(parent: Node, values: Dictionary) -> void:
 		panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		panel.add_theme_stylebox_override("panel", _style(BLUE if key == "chips" else RED, Color.TRANSPARENT, 8))
 		row.add_child(panel)
+		score_panels[key] = panel
 		var label := _label(panel, "%s %s" % [_number(values.get(key, 0)), "CHIPS" if key == "chips" else "MULT"], 23, Color.WHITE)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-
-func _scoring() -> void:
-	_label(body, "RESOLVING HAND", 16, CREAM)
-	_label(body, timeline_label, 24)
-	_label(body, timeline_delta, 20, GOLD)
-	_score_blocks(body, timeline_value)
-	var row := HBoxContainer.new()
-	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.add_child(row)
-	for id in snapshot.get("played_ids", []):
-		var c := CardView.new()
-		for card in snapshot.get("deck", []):
-			if card.id == id: c.data = card
-		c.order = 0 if str(id) == timeline_source else -1
-		c.custom_minimum_size = Vector2(48, 110)
-		c.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		c.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		row.add_child(c)
-	var sources := HBoxContainer.new()
-	body.add_child(sources)
-	for item in snapshot.get("modifiers", []):
-		var source := _item_card(sources, item, func(): pass, 48, 64)
-		source.compact = true
-		source.order = 0 if item.get("instance_id", item.get("id", "")) == timeline_source else -1
-	_label(body, "TOTAL  " + _number(timeline_value.get("total", 0)), 32, GOLD)
-	_label(body, "Checkpoint saved · effects resolve in order", 14)
-	_button(footer, "Skip animation →", _finish_animation)
+		score_labels[key] = label
 
 func _loadout() -> void:
+	var items: Array = state.get("modifiers", []) + state.get("consumables", [])
+	if items.is_empty(): return
 	var row := HBoxContainer.new()
 	body.add_child(row)
-	var mods: Array = state.get("modifiers", [])
-	for i in range(int(state.get("passive_capacity", 5))):
-		if i < mods.size():
-			var card := _item_card(row, mods[i], func(): _inventory(), 48, 60)
-			card.compact = true
-		else:
-			var slot := _button(row, "+", _inventory, 48)
-			slot.add_theme_color_override("font_color", Color("91b5a7"))
-	var count := _label(row, "%s/5" % mods.size(), 12)
-	count.autowrap_mode = TextServer.AUTOWRAP_OFF
-	count.custom_minimum_size.x = 24
-	count.size_flags_horizontal = Control.SIZE_SHRINK_END
+	for item in items:
+		var card := _item_card(row, item, func(): _inventory(), 36, 55)
+		card.compact = true
+		card.set_meta("source_id", item.get("instance_id", item.get("id", "")))
 
 func _hud() -> void:
 	var goal := _panel(body)
 	var row := HBoxContainer.new()
 	goal.add_child(row)
 	_label(row, "GOAL " + _number(state.get("target", 0)), 23)
-	_label(row, _number(state.get("round_score", 0)), 23, GOLD).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	round_label = _label(row, _number(state.get("round_score", 0)), 23, GOLD)
+	round_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	var progress := ProgressBar.new()
 	progress.custom_minimum_size.y = 6
 	progress.show_percentage = false
@@ -421,25 +510,38 @@ func _hud() -> void:
 	_loadout()
 
 func _blind() -> void:
-	_label(body, "CHOOSE YOUR TABLE", 25)
-	_label(body, "Ante %s / 8 · one table at a time" % state.get("ante", 1), 14)
+	_label(body, "Choose a table", 25)
 	var blinds: Array = state.get("ante_blinds", [])
 	for i in range(3):
 		var blind: Dictionary = blinds[i] if i < blinds.size() else {}
 		var current := i == int(state.get("round", 0))
 		var box := _panel(body)
-		box.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		var status := "AVAILABLE" if current else (str(blind.get("status", "complete")).to_upper() if i < int(state.get("round", 0)) else "LOCKED")
-		_label(box, "%s  /  %s" % [["01 SMALL", "02 BIG", "03 BOSS"][i], status], 16, GOLD if current else CREAM)
-		_label(box, "%s points · reward $%s" % [_number(blind.get("target", state.get("target", 0) if current else 0)), blind.get("reward", i + 3)], 21)
-		var boss: Dictionary = blind.get("boss", state.get("boss", {}) if i == 2 else {})
-		_label(box, str(boss.get("description", "Build a hand. Beat the target.")), 14)
+		var row := HBoxContainer.new()
+		box.add_child(row)
+		var ticket := TextureRect.new()
+		ticket.custom_minimum_size = Vector2(40, 56)
+		ticket.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		ticket.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		if ResourceLoader.exists("res://assets/v3/card_back.png"): ticket.texture = load("res://assets/v3/card_back.png")
+		row.add_child(ticket)
+		var words := VBoxContainer.new()
+		words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(words)
+		_label(words, ["SMALL", "BIG", "BOSS"][i], 14, GOLD if current else CREAM)
+		_label(words, _number(blind.get("target", 0)), 30)
+		var boss: Dictionary = blind.get("boss", {})
+		_button(row, "i", func():
+			var detail := _modal(str(blind.get("name", "Table")))
+			_label(detail, str(boss.get("description", "Beat the required score.")))
+			_label(detail, "Reward $%s" % blind.get("reward", 0))
+			_label(detail, "Standard balance is experimental." if run_mode == "standard" else "Practice table."), 48)
 		if current:
-			var row := HBoxContainer.new()
-			box.add_child(row)
-			_primary(_button(row, "Enter table", func(): _act({"type": "SELECT_BLIND"})))
-			if i < 2 and int(state.get("version", 1)) >= 2: _button(row, "Skip / tag", _skip_detail)
-	_label(body, "Seed %s · skips grant a tag, not a payout" % state.get("seed", 0), 14)
+			var actions := HBoxContainer.new()
+			box.add_child(actions)
+			_primary(_button(actions, "Enter", func(): _act({"type": "SELECT_BLIND"})))
+			if i < 2: _button(actions, "Skip / tag", _skip_detail)
+		else:
+			_label(box, str(blind.get("status", "locked")).capitalize() if i < int(state.get("round", 0)) else "Locked", 12)
 
 func _tag_text(value: Variant) -> String:
 	var effect := str(value.get("effect", value.get("id", ""))) if value is Dictionary else str(value)
@@ -457,35 +559,38 @@ func _skip_detail() -> void:
 	_primary(_button(box, "Take tag & advance", func(): _close_overlay(); _act({"type": "SKIP_BLIND"})))
 
 func _playing() -> void:
-	var preview: Dictionary = {}
-	if not selected.is_empty() and engine != null: preview = engine.preview(state, selected)
-	var stage := _panel(body)
-	var category := str(preview.get("category", "Choose 1–5 cards")).replace("_", " ").capitalize()
-	_label(stage, category + "  ·  " + str(selected.size()) + "/5", 17)
-	_score_blocks(stage, preview)
-	var row := HBoxContainer.new()
-	body.add_child(row)
-	_label(row, "%s hands · %s discards" % [state.get("hands_left", 0), state.get("discards_left", 0)], 14)
-	_button(row, "Items %s/%s" % [state.get("consumables", []).size(), state.get("consumable_capacity", 2)], _inventory, 82).size_flags_horizontal = Control.SIZE_SHRINK_END
-	_button(row, "Sort", _sort, 48).size_flags_horizontal = Control.SIZE_SHRINK_END
-	var hand_space := VBoxContainer.new()
-	hand_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	hand_space.alignment = BoxContainer.ALIGNMENT_CENTER
-	body.add_child(hand_space)
-	var grid := GridContainer.new()
-	grid.columns = 4
-	grid.add_theme_constant_override("h_separation", 4)
-	grid.add_theme_constant_override("v_separation", 0)
-	hand_space.add_child(grid)
-	var ids: Array = state.get("hand_ids", []) if sorted_ids.is_empty() else sorted_ids
-	for id in ids: _card_button(grid, str(id), selected, func(): _select(str(id)))
-	var boss: Dictionary = state.get("boss", {})
-	_label(body, str(boss.get("description", "Tap order = scoring order · selection lifts cards")), 14)
-	var play := _button(footer, "Play hand", func(): _act({"type": "PLAY", "ids": selected.duplicate()}))
-	_primary(play)
-	play.disabled = selected.is_empty()
-	var discard := _button(footer, "Discard", func(): _act({"type": "DISCARD", "ids": selected.duplicate()}))
-	discard.disabled = selected.is_empty() or int(state.get("discards_left", 0)) <= 0
+	category_label = _label(body, "", 18, CREAM)
+	_score_blocks(body, {})
+	counts_label = _label(body, "", 14)
+	table = Control.new()
+	table.name = "PersistentTable"
+	table.custom_minimum_size.y = 230
+	table.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	body.add_child(table)
+	table.resized.connect(func(): if not animating: _layout_hand(false))
+	_sort_ids()
+	for side in ["deck", "used"]:
+		var pile := TextureRect.new()
+		pile.name = side
+		pile.size = Vector2(40, 56)
+		pile.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		pile.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if ResourceLoader.exists("res://assets/v3/card_back.png"): pile.texture = load("res://assets/v3/card_back.png")
+		table.add_child(pile)
+		table.resized.connect(func(): pile.position = Vector2(0 if side == "deck" else table.size.x - 40, 16))
+	for id in sorted_ids: _spawn_card(str(id))
+	var sorts := HBoxContainer.new()
+	body.add_child(sorts)
+	_button(sorts, "Rank", func(): _set_sort(false))
+	_button(sorts, "Suit", func(): _set_sort(true))
+	_button(sorts, "Details", _events)
+	play_button = _button(footer, "Play hand", func(): _act({"type": "PLAY", "ids": selected.duplicate()}))
+	_primary(play_button)
+	discard_button = _button(footer, "Discard", func(): _act({"type": "DISCARD", "ids": selected.duplicate()}))
+	skip_button = _button(footer, "Skip", _finish_animation)
+	skip_button.visible = false
+	_refresh_table()
+	_layout_hand.call_deferred(false)
 
 func _primary(button: Button) -> void:
 	button.add_theme_stylebox_override("normal", _style(GOLD, GOLD))
@@ -526,21 +631,29 @@ func _select(id: String) -> void:
 	if animating: return
 	if selected.has(id): selected.erase(id)
 	elif selected.size() < 5: selected.append(id)
-	_render()
+	_refresh_table()
+	_layout_hand(true)
 
 func _sort() -> void:
-	sort_suit = not sort_suit
+	_set_sort(not sort_suit)
+
+func _set_sort(suit: bool) -> void:
+	if animating: return
+	sort_suit = suit
+	_sort_ids()
+	_layout_hand(true)
+
+func _sort_ids() -> void:
 	sorted_ids = state.get("hand_ids", []).duplicate()
 	sorted_ids.sort_custom(func(a, b):
 		var ca := _card(str(a))
 		var cb := _card(str(b))
 		if sort_suit and ca.get("suit", 0) != cb.get("suit", 0): return ca.get("suit", 0) < cb.get("suit", 0)
-		return ca.get("rank", 0) > cb.get("rank", 0))
-	_render()
+		if ca.get("rank", 0) != cb.get("rank", 0): return ca.get("rank", 0) > cb.get("rank", 0)
+		return str(a) < str(b))
 
 func _shop() -> void:
 	_label(body, "THE NIGHT MARKET", 24, CREAM)
-	_label(body, "Tap a card to inspect · passives resolve left to right", 14)
 	var shelf := HBoxContainer.new()
 	body.add_child(shelf)
 	var offers: Array = state.get("shop", [])
@@ -565,6 +678,7 @@ Empty shelf", 20)
 		slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		packs.add_child(slot)
 		var art: Dictionary = offer.duplicate()
+		art["pack_family"] = str(offer.get("family", "passive"))
 		art["family"] = "pack"
 		art["name"] = str(offer.get("family", "Mystery")).capitalize() + " pack"
 		var card := _item_card(slot, art, func(): _pack_detail(offer), 100, 104)
@@ -593,6 +707,9 @@ func _offer_detail(item: Dictionary, index: int) -> void:
 
 func _voucher_detail(item: Dictionary) -> void:
 	var box := _modal(str(item.get("name", "Voucher")))
+	var art := item.duplicate(true)
+	art["family"] = "voucher"
+	_item_card(box, art, func(): pass, 120, 160).size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_label(box, "RUN UPGRADE · no passive slot used", 16, GOLD)
 	_label(box, str(item.get("description", "")), 22)
 	var bought := bool(item.get("purchased", false))
@@ -626,7 +743,6 @@ func _receipt() -> void:
 	_label(paper, "────────────────────────", 14)
 	_label(paper, "TOTAL  +$%s" % receipt.get("total", 0), 30, GOLD)
 	_label(paper, "$%s → $%s after cashout" % [receipt.get("money_before", state.get("money", 0)), receipt.get("money_after", state.get("money", 0))], 18)
-	_label(body, "Your reward is pending. Collect it exactly once.", 14)
 	_primary(_button(footer, "Cash out $%s" % receipt.get("total", 0), func(): _act({"type": "CASH_OUT"})))
 
 func _pack() -> void:
@@ -634,7 +750,6 @@ func _pack() -> void:
 	var options: Array = pack.get("options", [])
 	_label(body, str(pack.get("family", "Mystery")).to_upper() + " / REVEAL", 25)
 	_label(body, "Choose %s of %s" % [pack.get("remaining", 1), options.size()], 21, GOLD)
-	_label(body, "Tap to select. Confirm to keep; skip for no refund.", 14)
 	var row := HBoxContainer.new()
 	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_child(row)
@@ -822,3 +937,183 @@ func _number(value: Variant) -> String:
 	if absf(number) >= 10000: return "%.1fk" % (number / 1000.0)
 	if number == floorf(number): return str(int(number))
 	return "%.1f" % number
+
+func _spawn_card(id: String) -> Control:
+	var card := CardView.new()
+	card.data = _card(id).duplicate(true)
+	card.size = Vector2(68, 100)
+	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.pivot_offset = card.size / 2
+	table.add_child(card)
+	cards[id] = card
+	return card
+
+func _hand_position(index: int, count: int) -> Vector2:
+	var width := table.size.x
+	var step := minf(48, (width - 70) / maxf(1, count - 1))
+	return Vector2((width - (step * (count - 1) + 68)) / 2 + index * step, table.size.y - 116)
+
+func _layout_hand(moving: bool) -> void:
+	if not is_instance_valid(table): return
+	for i in range(sorted_ids.size()):
+		var id: String = str(sorted_ids[i])
+		if not cards.has(id): continue
+		var card: Control = cards[id]
+		card.z_index = i
+		card.order = selected.find(id)
+		card.queue_redraw()
+		var destination := _hand_position(i, sorted_ids.size()) - Vector2(0, 18 if selected.has(id) else 0)
+		if selection_tweens.has(id) and selection_tweens[id].is_valid(): selection_tweens[id].kill()
+		if moving and not reduced_motion:
+			var tween := create_tween()
+			selection_tweens[id] = tween
+			tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween.tween_property(card, "position", destination, 0.16)
+		else: card.position = destination
+
+func _input(event: InputEvent) -> void:
+	if animating or is_instance_valid(overlay) or not is_instance_valid(table): return
+	var point := Vector2.ZERO
+	if event is InputEventMouseButton and event.device == InputEvent.DEVICE_ID_EMULATION: return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed: point = event.position
+	elif event is InputEventScreenTouch and event.pressed: point = event.position
+	else: return
+	# Reverse draw order resolves overlapping rectangles, including lifted cards.
+	for i in range(sorted_ids.size() - 1, -1, -1):
+		var id := str(sorted_ids[i])
+		if cards.has(id) and cards[id].get_global_rect().has_point(point):
+			_select(id)
+			get_viewport().set_input_as_handled()
+			return
+
+func _refresh_table() -> void:
+	if not is_instance_valid(table): return
+	var preview: Dictionary = engine.preview(state, selected) if not selected.is_empty() else {}
+	category_label.text = str(preview.get("category", "")).replace("_", " ").capitalize()
+	for key in ["chips", "mult"]: _score_number(float(preview.get(key, 0)), key)
+	counts_label.text = "%s hands   /   %s discards" % [state.get("hands_left", 0), state.get("discards_left", 0)]
+	round_label.text = _number(state.get("round_score", 0))
+	play_button.disabled = selected.is_empty() or animating
+	discard_button.disabled = selected.is_empty() or animating or int(state.get("discards_left", 0)) <= 0
+	skip_button.visible = animating
+
+func _duration(value: float) -> float:
+	return 0.025 if reduced_motion else value * (0.45 if fast_motion else 1.0)
+
+func _tween() -> Tween:
+	var tween := create_tween()
+	motion_tweens.append(tween)
+	return tween
+
+func _move(card: Control, destination: Vector2, seconds: float, delay: float = 0.0) -> void:
+	var tween := _tween()
+	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(card, "position", destination, _duration(seconds)).set_delay(_duration(delay) if delay > 0 else 0.0)
+
+func _pause(seconds: float) -> void:
+	await get_tree().create_timer(_duration(seconds)).timeout
+
+func _pulse(control: Control) -> void:
+	if reduced_motion: return
+	control.pivot_offset = control.size / 2
+	var tween := _tween()
+	tween.tween_property(control, "scale", Vector2(1.09, 1.09), _duration(0.08))
+	tween.tween_property(control, "scale", Vector2.ONE, _duration(0.15))
+
+func _wiggle(control: Control) -> void:
+	if reduced_motion: return
+	var tween := _tween()
+	tween.tween_property(control, "rotation", -0.07, _duration(0.07))
+	tween.tween_property(control, "rotation", 0.06, _duration(0.09))
+	tween.tween_property(control, "rotation", 0.0, _duration(0.07))
+	_pulse(control)
+
+func _score_number(value: float, key: String) -> void:
+	if is_instance_valid(score_labels.get(key)): score_labels[key].text = _number(value) + (" CHIPS" if key == "chips" else " MULT")
+
+func _present_action(token: int, kind: String) -> void:
+	for tween in selection_tweens.values():
+		if tween.is_valid(): tween.kill()
+	selection_tweens.clear()
+	_refresh_table()
+	round_label.text = _number(snapshot.get("round_score", 0))
+	for key in ["chips", "mult"]: _score_number(0, key)
+	if kind == "PLAY":
+		for i in range(played_ids.size()):
+			var id := str(played_ids[i])
+			if cards.has(id):
+				cards[id].z_index = 30 + i
+				_move(cards[id], Vector2((table.size.x - played_ids.size() * 57) / 2 + i * 57, 12), 0.32, i * 0.035)
+		await _pause(0.52)
+		if token != presentation_token: return
+		for event in event_lines:
+			if token != presentation_token: return
+			var event_type := str(event.get("type", ""))
+			if event_type in ["action", "receipt", "growth", "score"]: continue
+			category_label.text = str(event.get("label", "")).replace("_", " ").capitalize()
+			var source := str(event.get("source_id", ""))
+			if cards.has(source): _wiggle(cards[source])
+			var target := str(event.get("target_id", ""))
+			if target != source and cards.has(target): _wiggle(cards[target])
+			for item in body.find_children("*", "Button", true, false):
+				if item.get_meta("source_id", "") == source and not source.is_empty(): _wiggle(item)
+			var after: Dictionary = event.get("after", {})
+			var before: Dictionary = event.get("before", {})
+			for key in ["chips", "mult"]:
+				if after.has(key) and float(after[key]) != float(before.get(key, 0)):
+					_pulse(score_panels[key])
+					var tween := _tween()
+					tween.tween_method(_score_number.bind(key), float(before.get(key, 0)), float(after[key]), _duration(0.22))
+			if event_type == "score_total":
+				category_label.text = "%s × %s = %s" % [_number(after.get("chips", 0)), _number(after.get("mult", 0)), _number(after.get("total", 0))]
+				_pulse(category_label)
+			if event_type == "round_total":
+				var flying := _label(table, "+" + _number(event.get("delta", {}).get("total", 0)), 30, GOLD)
+				flying.autowrap_mode = TextServer.AUTOWRAP_OFF
+				flying.size = Vector2(100, 40)
+				flying.position = Vector2(table.size.x / 2 - 45, 0)
+				_move(flying, (round_label.global_position - table.global_position), 0.45)
+				var tween := _tween()
+				tween.tween_method(func(value): round_label.text = _number(roundf(value)), float(snapshot.get("round_score", 0)), float(after_snapshot.get("round_score", 0)), _duration(0.5))
+				tween.tween_callback(flying.queue_free)
+			await _pause(0.55 if event_type in ["round_total", "score_total"] else 0.32)
+	if token != presentation_token: return
+	# Same selected nodes leave the table; they are not replaced by scoring replicas.
+	for i in range(played_ids.size()):
+		var id := str(played_ids[i])
+		if cards.has(id):
+			_move(cards[id], Vector2(table.size.x - 68, 0), 0.32, i * 0.025)
+			var shrink := _tween()
+			shrink.tween_property(cards[id], "scale", Vector2(0.55, 0.55), _duration(0.32))
+	await _pause(0.5)
+	if token != presentation_token: return
+	for id in played_ids:
+		if cards.has(str(id)):
+			cards[str(id)].queue_free()
+			cards.erase(str(id))
+	_sort_ids()
+	var draw_index := 0
+	for id in sorted_ids:
+		if not cards.has(str(id)):
+			var card := _spawn_card(str(id))
+			card.position = Vector2(0, 16)
+			_move(card, _hand_position(sorted_ids.find(id), sorted_ids.size()), 0.4, draw_index * 0.065)
+			draw_index += 1
+		else: _move(cards[str(id)], _hand_position(sorted_ids.find(id), sorted_ids.size()), 0.25)
+	await _pause(0.48 + draw_index * 0.065)
+	if token == presentation_token: _finish_animation()
+
+func _initial_deal() -> void:
+	if not is_instance_valid(table) or reduced_motion: return
+	animating = true
+	presentation_token += 1
+	var token := presentation_token
+	_refresh_table()
+	await get_tree().process_frame
+	if token != presentation_token: return
+	for i in range(sorted_ids.size()):
+		var card: Control = cards[str(sorted_ids[i])]
+		card.position = Vector2(0, 16)
+		_move(card, _hand_position(i, sorted_ids.size()), 0.42, i * 0.065)
+	await _pause(0.5 + sorted_ids.size() * 0.065)
+	if token == presentation_token: _finish_animation()

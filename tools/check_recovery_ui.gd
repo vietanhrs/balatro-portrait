@@ -14,6 +14,7 @@ func run() -> void:
 	root.add_child(ui)
 	await process_frame
 	check(Save.recovery_required, "menu detects unrecoverable save")
+	ui._run_setup()
 	ui._confirm_new()
 	check(is_instance_valid(ui.overlay) and ui.state.is_empty(), "new run requests explicit confirmation")
 	ui._back()

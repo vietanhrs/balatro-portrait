@@ -17,3 +17,11 @@ mkdir -p "$HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_CACHE_HOME"
 "$GODOT" --headless --path "$ROOT" --script res://tests/ui/redesign_capture.gd
 "$GODOT" --headless --path "$ROOT" --script res://tests/ui/smoke.gd
 "$GODOT" --headless --path "$ROOT" --script res://tools/check_ui_run.gd
+
+"$GODOT" --headless --path "$ROOT" --script res://tests/ui/v3_motion.gd
+
+"$GODOT" --headless --path "$ROOT" --script res://tests/ui/v3_event_tiles.gd
+
+"$GODOT" --headless --path "$ROOT" --script res://tests/ui/v3_deal_discard.gd
+
+"$GODOT" --headless --path "$ROOT" --script res://tests/ui/v3_screens.gd

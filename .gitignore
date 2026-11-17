@@ -11,3 +11,7 @@ export_credentials.cfg
 PLAN.md
 tests/ui/*.png
 tests/ui/*.png.import
+
+# Private/generated motion review evidence.
+tests/ui/*.mp4
+tests/ui/*.log

@@ -1,0 +1,13 @@
+# Motion candidate verification — 0.3.0-alpha
+
+Fresh core1793/v2 483 checks passed; save/recovery/legacy migration checks passed. Full legal179-action Practice UI replay still wins24 rounds, resumes seven fresh UI instances and checks every checkpoint; legal loss covered. Motion, tile, deal/discard and viewport suites pass. No solver or balance changes.
+
+Isolated AOSP API35 x86_64 native emulator: same-signer install-r from0.2 preserves v2 checkpoint bytes; seeded531 play/discard/flush/cashout/shop, all eight exposed card strips, menu/settings/statistics/collections, Back, background and force-stop during animation tested. Android touch duplication was fixed by ignoring synthesized mouse events following touch. Actual screenrecord and chronological frame review verify persistent table movement, chips/mult/product/round transfer, cleanup/refill and drifting texture. No claim of measured60fps or physical-device coverage.
+
+Default setup is random with hidden seed field until Seeded checked. Profile statistics start when tracking begins, not retroactively. Settings persist. Profile and gameplay checkpoint are separate atomic files: process death between writes may undercount observations; failed new-run checkpoint may overcount starts. Gameplay save remains authoritative.
+
+Overlap exposes approximately38dp-wide strips for eight cards at360dp; not a48dp-width accessibility claim. Native720x1280 and860x1864 sampled. Tall layout retains open central space; item artwork now preserves its original aspect ratio with textured surround. Background samples the original base texture twice rather than binding all available layers.
+
+Desktop fresh rendered capture timed out in integration environment; headless bounds and actual native visual evidence are the verified integration gates. Physical ARM64/notches, universal accessibility, full native eight-ante playthrough, balance and reference-complete content remain unverified. Standard remains experimental. Candidate is private until parent visual review and publication approval.
+
+Final style pass removes duplicate home title/footer and persistent shop/pack/cashout guidance; About retains the authorship description. Fresh complete checks pass again. Final Android home, collection/detail and explicit shop visual fixture screenshots verify contained artwork and playing-card pack alias. Shop fixture has edited money/offers and is visual-only, not gameplay evidence; original emulator checkpoint restored byte-identically afterward. Ten-second native scoring preview is an unstitched trim of the prior real-play recording; scoring code/layout is unchanged by the final style pass. No release/tag authorized.

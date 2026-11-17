@@ -1,0 +1,9 @@
+# v3 artwork provenance — 2026-11-17
+
+All illustrations, guilloche cardback, periodic background fields, paper/fabric grain, panels, buttons and wordmark composition are original procedural raster artwork authored for Velvet Circuit by the OpenClaw art lane, copyright 2026 Velvet Circuit contributors, under the repository MIT license (../../LICENSE). No downloaded art packs, proprietary game images, SVG sources, copied mascots, reference-game logo, music or video were used.
+
+Generation: `python tools/art_v3/generate.py` from repository root. Requires Python, Pillow and NumPy plus system Noto Serif Bold/Noto Sans Regular. Fixed seed 1847; periodic trigonometric fields generate seamless backgrounds; pixel noise and directional fiber generate surfaces; 2× raster illustration drawing, engraved hatching, pigment distress and Lanczos reduction generate item prints. Runtime files are PNG; JPEG proof sheets are developer-only. Generator reads item IDs from core/game_engine.gd without modifying it.
+
+Font provenance: logo lettering uses locally installed `/usr/share/fonts/noto/NotoSerif-Bold.ttf`; contact-sheet labels use `/usr/share/fonts/noto/NotoSans-Regular.ttf`. Both actual font files were inspected with fontTools name records 0, 13 and 14: Copyright 2022 The Noto Project Authors (https://github.com/notofonts/latin-greek-cyrillic), SIL Open Font License 1.1, https://scripts.sil.org/OFL. Font binaries are NOT bundled. Rasterized text artwork is not a redistribution of font software. System package license file reported Apache 2.0, so actual font embedded licensing was checked rather than relying on that mismatched package-level notice.
+
+No paid service or generative-image service used. All asset files are locally reproducible from the generator and installed font dependencies.

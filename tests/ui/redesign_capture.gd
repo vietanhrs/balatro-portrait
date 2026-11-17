@@ -15,7 +15,7 @@ func capture(label: String) -> void:
 		root.get_texture().get_image().save_png("res://tests/ui/" + prefix + label + ".png")
 func check_controls(node: Node, label: String) -> void:
 	if node is Button and node.is_visible_in_tree():
-		if node.size.x < 47.9 or node.size.y < 47.9:
+		if (node.size.x < 47.9 or node.size.y < 47.9) and node.mouse_filter != Control.MOUSE_FILTER_IGNORE:
 			push_error("Small control " + label + " " + str(node.size)); failures += 1
 		if not Rect2(Vector2.ZERO, root.get_visible_rect().size).encloses(node.get_global_rect()):
 			push_error("Outside viewport " + label + " " + str(node.get_global_rect())); failures += 1
@@ -41,14 +41,12 @@ func run() -> void:
 		await capture("playing")
 		for id in ui.state.hand_ids.slice(0,3): ui._select(id)
 		await capture("selected")
-		ui.snapshot = ui.state.duplicate(true)
-		ui.snapshot["played_ids"] = ui.selected.duplicate()
-		ui.timeline_value = ui.engine.preview(ui.state,ui.selected)
-		ui.timeline_label = "Card chips +10 · ordered effects"
-		ui.animating = true
-		ui._render()
+		ui.reduced_motion = false
+		ui._act({"type":"PLAY", "ids":ui.selected.duplicate()})
+		await create_timer(0.6).timeout
 		await capture("scoring")
 		ui._finish_animation()
+		ui.reduced_motion = true
 		# Visual fixtures only: not balance or engine correctness evidence.
 		ui.state.phase = "cashout"
 		ui.state.round_score = 428

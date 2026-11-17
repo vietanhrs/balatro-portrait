@@ -23,6 +23,7 @@ func run() -> void:
 	await settle()
 	ui._new_run(531)
 	ui._act({"type":"SELECT_BLIND"})
+	ui._finish_animation()
 	var action := {"type":"PLAY","ids":best_ids(ui.state)}
 	var expected: Dictionary = ui.engine.dispatch(ui.state,action)
 	ui._act(action)
